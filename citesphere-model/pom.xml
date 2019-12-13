@@ -1,0 +1,110 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>edu.asu.diging</groupId>
+    <artifactId>citesphere-model</artifactId>
+    <version>0.1-SNAPSHOT</version>
+
+    <properties>
+        <spring.version>5.1.2.RELEASE</spring.version>
+        <spring-data.version>Lovelace-RELEASE</spring-data.version>
+        <com.fasterxml.jackson.version>2.9.9</com.fasterxml.jackson.version>
+        <spring-security-version>5.1.5.RELEASE</spring-security-version>
+        <javers.version>5.0.0</javers.version>
+    </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-framework-bom</artifactId>
+                <version>${spring.version}</version>
+                <scope>import</scope>
+                <type>pom</type>
+            </dependency>
+            <!-- https://mvnrepository.com/artifact/org.springframework.data/spring-data-releasetrain -->
+            <!-- https://mvnrepository.com/artifact/org.springframework.data/spring-data-releasetrain -->
+            <dependency>
+                <groupId>org.springframework.data</groupId>
+                <artifactId>spring-data-releasetrain</artifactId>
+                <version>${spring-data.version}</version>
+                <scope>import</scope>
+                <type>pom</type>
+            </dependency>
+
+        </dependencies>
+    </dependencyManagement>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>${com.fasterxml.jackson.version}</version>
+        </dependency>
+
+        <!-- Spring Data -->
+        <dependency>
+            <groupId>org.springframework.data</groupId>
+            <artifactId>spring-data-jpa</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-core</artifactId>
+            <version>${spring-security-version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-core</artifactId>
+            <version>5.4.2.Final</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/com.google.guava/guava -->
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>27.0-jre</version>
+        </dependency>
+
+        <!-- Javers -->
+        <!-- https://mvnrepository.com/artifact/org.javers/javers-core -->
+        <dependency>
+            <groupId>org.javers</groupId>
+            <artifactId>javers-core</artifactId>
+            <version>${javers.version}</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.javers/javers-spring -->
+        <dependency>
+            <groupId>org.javers</groupId>
+            <artifactId>javers-spring</artifactId>
+            <version>${javers.version}</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.javers/javers-spring-jpa -->
+        <dependency>
+            <groupId>org.javers</groupId>
+            <artifactId>javers-spring-jpa</artifactId>
+            <version>${javers.version}</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.javers/javers-persistence-sql -->
+        <dependency>
+            <groupId>org.javers</groupId>
+            <artifactId>javers-persistence-sql</artifactId>
+            <version>${javers.version}</version>
+        </dependency>
+
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>
