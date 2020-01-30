@@ -30,4 +30,8 @@ public interface ICitationCollection {
 
     String getParentCollectionKey();
 
+    void setLastModified(String lastModified);
+
+    String getLastModified();
+
 }

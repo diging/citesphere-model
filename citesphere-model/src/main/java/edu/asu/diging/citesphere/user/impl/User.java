@@ -1,4 +1,4 @@
-package edu.asu.diging.citesphere.model.impl;
+package edu.asu.diging.citesphere.user.impl;
 
 import java.util.Collection;
 import java.util.Set;
@@ -15,8 +15,8 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import edu.asu.diging.citesphere.model.IUser;
 import edu.asu.diging.citesphere.model.Role;
+import edu.asu.diging.citesphere.user.IUser;
 
 @Entity
 public class User implements UserDetails, IUser {

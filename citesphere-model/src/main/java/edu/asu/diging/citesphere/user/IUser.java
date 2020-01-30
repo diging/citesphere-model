@@ -1,4 +1,4 @@
-package edu.asu.diging.citesphere.model;
+package edu.asu.diging.citesphere.user;
 
 import java.util.Set;
 
