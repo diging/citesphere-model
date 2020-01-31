@@ -17,7 +17,7 @@ public class GroupCitationMapping {
 
     @Id
     @GeneratedValue(generator = "groupcitmap_id_generator")
-    @GenericGenerator(name = "groupcitmap_id_generator", parameters = @Parameter(name = "prefix", value = "GCM"), strategy = "edu.asu.diging.citesphere.core.repository.IdGenerator")
+    @GenericGenerator(name = "groupcitmap_id_generator", parameters = @Parameter(name = "prefix", value = "GCM"), strategy = "edu.asu.diging.citesphere.data.bib.IdGenerator")
     private String id;
     
     @OneToOne(targetEntity=Citation.class)

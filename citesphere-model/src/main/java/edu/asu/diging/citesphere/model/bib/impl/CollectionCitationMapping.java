@@ -19,7 +19,7 @@ public class CollectionCitationMapping {
 
     @Id
     @GeneratedValue(generator = "collcitmap_id_generator")
-    @GenericGenerator(name = "collcitmap_id_generator", parameters = @Parameter(name = "prefix", value = "CCM"), strategy = "edu.asu.diging.citesphere.core.repository.IdGenerator")
+    @GenericGenerator(name = "collcitmap_id_generator", parameters = @Parameter(name = "prefix", value = "CCM"), strategy = "edu.asu.diging.citesphere.data.bib.IdGenerator")
     private String id;
     
     @OneToOne(targetEntity=Citation.class)

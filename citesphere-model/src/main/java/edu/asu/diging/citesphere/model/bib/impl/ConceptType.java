@@ -22,7 +22,7 @@ public class ConceptType implements IConceptType {
     @GeneratedValue(generator = "concepttype_id_generator")
     @GenericGenerator(name = "concepttype_id_generator",    
                     parameters = @Parameter(name = "prefix", value = "CTY"), 
-                    strategy = "edu.asu.diging.citesphere.core.repository.IdGenerator"
+                    strategy = "edu.asu.diging.citesphere.data.bib.IdGenerator"
             )
     private String id;
     @Lob

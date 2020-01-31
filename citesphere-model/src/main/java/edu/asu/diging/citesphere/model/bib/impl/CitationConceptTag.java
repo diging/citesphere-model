@@ -15,7 +15,7 @@ public class CitationConceptTag implements ICitationConceptTag {
 
     @Id
     @GeneratedValue(generator = "concepttag_id_generator")
-    @GenericGenerator(name = "concepttag_id_generator", parameters = @Parameter(name = "prefix", value = "CPTT"), strategy = "edu.asu.diging.citesphere.core.repository.IdGenerator")
+    @GenericGenerator(name = "concepttag_id_generator", parameters = @Parameter(name = "prefix", value = "CPTT"), strategy = "edu.asu.diging.citesphere.data.bib.IdGenerator")
     private String id;
     @Lob
     private String conceptName;
@@ -26,17 +26,23 @@ public class CitationConceptTag implements ICitationConceptTag {
     private String typeUri;
     private String localConceptTypeId;
 
-
-    /* (non-Javadoc)
-     * @see edu.asu.diging.citesphere.core.model.bib.impl.ICitationConceptTag#getId()
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * edu.asu.diging.citesphere.core.model.bib.impl.ICitationConceptTag#getId()
      */
     @Override
     public String getId() {
         return id;
     }
 
-    /* (non-Javadoc)
-     * @see edu.asu.diging.citesphere.core.model.bib.impl.ICitationConceptTag#setId(java.lang.String)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * edu.asu.diging.citesphere.core.model.bib.impl.ICitationConceptTag#setId(java.
+     * lang.String)
      */
     @Override
     public void setId(String id) {
@@ -102,5 +108,5 @@ public class CitationConceptTag implements ICitationConceptTag {
     public void setLocalConceptTypeId(String localConceptTypeId) {
         this.localConceptTypeId = localConceptTypeId;
     }
-    
+
 }

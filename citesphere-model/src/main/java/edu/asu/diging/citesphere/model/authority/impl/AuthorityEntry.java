@@ -19,7 +19,7 @@ public class AuthorityEntry implements IAuthorityEntry {
     @GeneratedValue(generator = "authority_id_generator")
     @GenericGenerator(name = "authority_id_generator",    
                     parameters = @Parameter(name = "prefix", value = "AU"), 
-                    strategy = "edu.asu.diging.citesphere.core.repository.IdGenerator"
+                    strategy = "edu.asu.diging.citesphere.data.bib.IdGenerator"
             )
     private String id;
     @Lob
