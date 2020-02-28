@@ -52,7 +52,7 @@ public class User implements UserDetails, IUser {
             if (role.getAuthority().equals(Role.ADMIN)) {
                 return true;
             }
-        };
+        }
         
         return false;
     }
