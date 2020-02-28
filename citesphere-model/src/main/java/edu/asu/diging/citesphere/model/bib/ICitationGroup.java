@@ -3,12 +3,12 @@ package edu.asu.diging.citesphere.model.bib;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-public interface ICitationGroup {
+public interface ICitationGroup extends IGrouping {
 
     long getId();
-
+    
     void setId(long id);
-
+    
     long getVersion();
 
     void setVersion(long version);
@@ -28,10 +28,6 @@ public interface ICitationGroup {
     List<ICitation> getCitations();
 
     void setCitations(List<ICitation> citations);
-
-    void setName(String name);
-
-    String getName();
 
     void setFileEditing(String fileEditing);
 

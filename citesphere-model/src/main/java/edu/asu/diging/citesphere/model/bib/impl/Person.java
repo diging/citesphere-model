@@ -25,7 +25,7 @@ public class Person implements IPerson, Comparable<Person> {
     @GeneratedValue(generator = "person_id_generator")
     @GenericGenerator(name = "person_id_generator",    
                     parameters = @Parameter(name = "prefix", value = "PE"), 
-                    strategy = "edu.asu.diging.citesphere.core.repository.IdGenerator"
+                    strategy = "edu.asu.diging.citesphere.data.bib.IdGenerator"
             )
     @JsonIgnore
     private String id;

@@ -24,7 +24,7 @@ public class Creator implements ICreator, Comparable<ICreator> {
     @GeneratedValue(generator = "creator_id_generator")
     @GenericGenerator(name = "creator_id_generator",    
                     parameters = @Parameter(name = "prefix", value = "CR"), 
-                    strategy = "edu.asu.diging.citesphere.core.repository.IdGenerator"
+                    strategy = "edu.asu.diging.citesphere.data.bib.IdGenerator"
             )
     @JsonIgnore
     private String id;

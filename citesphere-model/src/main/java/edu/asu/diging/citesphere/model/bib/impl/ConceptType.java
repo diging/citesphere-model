@@ -11,9 +11,9 @@ import javax.persistence.ManyToOne;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 
-import edu.asu.diging.citesphere.model.IUser;
 import edu.asu.diging.citesphere.model.bib.IConceptType;
-import edu.asu.diging.citesphere.model.impl.User;
+import edu.asu.diging.citesphere.user.IUser;
+import edu.asu.diging.citesphere.user.impl.User;
 
 @Entity
 public class ConceptType implements IConceptType {
@@ -22,7 +22,7 @@ public class ConceptType implements IConceptType {
     @GeneratedValue(generator = "concepttype_id_generator")
     @GenericGenerator(name = "concepttype_id_generator",    
                     parameters = @Parameter(name = "prefix", value = "CTY"), 
-                    strategy = "edu.asu.diging.citesphere.core.repository.IdGenerator"
+                    strategy = "edu.asu.diging.citesphere.data.bib.IdGenerator"
             )
     private String id;
     @Lob
