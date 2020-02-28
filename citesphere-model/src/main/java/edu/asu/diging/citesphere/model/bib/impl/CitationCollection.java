@@ -21,6 +21,8 @@ public class CitationCollection implements ICitationCollection {
     private long numberOfItems;
     private String name;
     private String parentCollectionKey;
+    private String lastModified;
+    
     
     @ManyToOne(targetEntity=CitationGroup.class)
     @JoinColumn(name="group_id")
@@ -117,6 +119,14 @@ public class CitationCollection implements ICitationCollection {
     @Override
     public void setGroup(ICitationGroup group) {
         this.group = group;
+    }
+    @Override
+    public String getLastModified() {
+        return lastModified;
+    }
+    @Override
+    public void setLastModified(String lastModified) {
+        this.lastModified = lastModified;
     }
     
 }

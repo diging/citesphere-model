@@ -180,6 +180,18 @@ public class Citation implements ICitation {
         return otherCreators;
     }
     @Override
+    public Set<ICreator> getOtherCreators(String role) {
+        Set<ICreator> creators = new HashSet<>();
+        if (otherCreators != null) {
+            otherCreators.forEach(c -> {
+                if (c.getRole().equals(role)) {
+                    creators.add(c);
+                }
+            });
+        }
+        return creators;
+    }
+    @Override
     public void setOtherCreators(Set<ICreator> otherCreators) {
         this.otherCreators = otherCreators;
     }
@@ -465,16 +477,4 @@ public class Citation implements ICitation {
         return roles;
     }
     
-    @Override
-    public Set<ICreator> getOtherCreators(String role) {
-        Set<ICreator> creators = new HashSet<>();
-        if (otherCreators != null) {
-            otherCreators.forEach(c -> {
-                if (c.getRole().equals(role)) {
-                    creators.add(c);
-                }
-            });
-        }
-        return creators;
-    }
 }

@@ -19,7 +19,7 @@ public class Affiliation implements IAffiliation {
     @GeneratedValue(generator = "affiliation_id_generator")
     @GenericGenerator(name = "affiliation_id_generator",    
                     parameters = @Parameter(name = "prefix", value = "AF"), 
-                    strategy = "edu.asu.diging.citesphere.core.repository.IdGenerator"
+                    strategy = "edu.asu.diging.citesphere.data.bib.IdGenerator"
             )
     @JsonIgnore
     private String id;

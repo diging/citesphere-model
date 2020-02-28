@@ -248,4 +248,17 @@ public class CitationGroup implements ICitationGroup {
     public void setUsers(List<String> users) {
         this.users = users;
     }
+
+    @Override
+    public String getKey() {
+        return id + "";
+    }
+
+    /**
+     * Do not use this method. It is only a workaround.
+     */
+    @Override
+    public void setKey(String key) {
+        // do nothing
+    }
 }
