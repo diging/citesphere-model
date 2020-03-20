@@ -33,6 +33,7 @@ public class Reference implements IReference {
     @JsonIgnore
     private String id;
     
+    @Lob
     private String authorString;
     @OneToMany(targetEntity=Creator.class, cascade=CascadeType.ALL, orphanRemoval=true)
     @JoinTable(name="Reference_Contributor")
@@ -40,6 +41,7 @@ public class Reference implements IReference {
     @NotFound(action=NotFoundAction.IGNORE)
     private Set<ICreator> contributors;
     
+    @Lob
     private String title;
     private String year;
     private String identifier;
