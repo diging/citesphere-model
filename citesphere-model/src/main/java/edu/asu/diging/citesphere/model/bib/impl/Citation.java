@@ -159,6 +159,12 @@ public class Citation implements ICitation {
      */
     @Override
     public void setAuthors(Set<IPerson> authors) {
+        // If we don't do the following, hibernate will complaining during update.
+        if (this.authors != null) {
+            this.authors.clear();
+            this.authors.addAll(authors);
+            return;
+        }
         this.authors = authors;
     }
     /* (non-Javadoc)
@@ -173,6 +179,12 @@ public class Citation implements ICitation {
      */
     @Override
     public void setEditors(Set<IPerson> editors) {
+        // If we don't do the following, hibernate will complaining during update.
+        if (this.editors != null) {
+            this.editors.clear();
+            this.editors.addAll(editors);
+            return;
+        }
         this.editors = editors;
     }
     @Override
@@ -193,6 +205,12 @@ public class Citation implements ICitation {
     }
     @Override
     public void setOtherCreators(Set<ICreator> otherCreators) {
+        // If we don't do the following, hibernate will complaining during update.
+        if (this.otherCreators != null) {
+            this.otherCreators.clear();
+            this.otherCreators.addAll(otherCreators);
+            return; 
+        }
         this.otherCreators = otherCreators;
     }
     /* (non-Javadoc)
@@ -449,6 +467,12 @@ public class Citation implements ICitation {
     }
     @Override
     public void setConceptTags(Set<ICitationConceptTag> concepts) {
+        // If we don't do the following, hibernate will complaining during update.
+        if (this.conceptTags != null) {
+            this.conceptTags.clear();
+            this.conceptTags.addAll(concepts);
+            return;
+        }
         this.conceptTags = concepts;
     }
     @Override
@@ -457,6 +481,13 @@ public class Citation implements ICitation {
     }
     @Override
     public void setReferences(Set<IReference> references) {
+        // If we don't do the following, hibernate will complaining during update.
+        if (this.references != null) {
+            this.references.clear();
+            this.references.addAll(references);
+            return;
+        }
+        
         this.references = references;
     }
     @Override
