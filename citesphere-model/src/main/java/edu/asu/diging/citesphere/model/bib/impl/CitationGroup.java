@@ -9,6 +9,8 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
+import org.javers.core.metamodel.annotation.DiffIgnore;
+
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import edu.asu.diging.citesphere.model.bib.ICitation;
@@ -36,6 +38,7 @@ public class CitationGroup implements ICitationGroup {
     private OffsetDateTime updatedOn;
     private OffsetDateTime lastLocallyModifiedOn;
     
+    @DiffIgnore
     @JsonBackReference
     @OneToMany(targetEntity=Citation.class, mappedBy="group")
     private List<ICitation> citations;
