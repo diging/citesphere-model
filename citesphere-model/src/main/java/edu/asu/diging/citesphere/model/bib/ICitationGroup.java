@@ -69,4 +69,8 @@ public interface ICitationGroup extends IGrouping {
 
     List<String> getUsers();
 
+    OffsetDateTime getUpdateRequestedOn();
+
+    void setUpdateRequestedOn(OffsetDateTime updateRequestedOn);
+
 }

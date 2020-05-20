@@ -36,6 +36,7 @@ public class CitationGroup implements ICitationGroup {
     private String fileEditing;
     
     private OffsetDateTime updatedOn;
+    private OffsetDateTime updateRequestedOn;
     private OffsetDateTime lastLocallyModifiedOn;
     
     @DiffIgnore
@@ -263,5 +264,15 @@ public class CitationGroup implements ICitationGroup {
     @Override
     public void setKey(String key) {
         // do nothing
+    }
+    
+    @Override
+    public OffsetDateTime getUpdateRequestedOn() {
+        return updateRequestedOn;
+    }
+    
+    @Override
+    public void setUpdateRequestedOn(OffsetDateTime updateRequestedOn) {
+        this.updateRequestedOn = updateRequestedOn;
     }
 }
