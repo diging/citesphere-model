@@ -71,6 +71,6 @@ public interface ICitationGroup extends IGrouping {
 
     OffsetDateTime getUpdateRequestedOn();
 
-    void setUpdateRequestedOn(OffsetDateTime updateRequestedOn); 
+    void setUpdateRequestedOn(OffsetDateTime updateRequestedOn);
 
 }

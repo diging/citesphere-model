@@ -34,7 +34,7 @@ public class CitationGroup implements ICitationGroup {
     private String libraryEditing;
     private String libraryReading;
     private String fileEditing;
-  
+   
     private OffsetDateTime updatedOn;
     private OffsetDateTime updateRequestedOn;
     private OffsetDateTime lastLocallyModifiedOn;
