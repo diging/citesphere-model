@@ -41,9 +41,9 @@ public interface ICitation {
 
     void setPages(String pages);
 
-    OffsetDateTime getDate();
+    String getDate();
 
-    void setDate(OffsetDateTime date);
+    void setDate(String date);
 
     String getSeries();
 
@@ -129,9 +129,9 @@ public interface ICitation {
 
     long getVersion();
 
-    void setGroup(ICitationGroup group);
+    void setGroup(String group);
 
-    ICitationGroup getGroup();
+    String getGroup();
 
     void setOtherCreators(Set<ICreator> otherCreators);
 
@@ -148,5 +148,9 @@ public interface ICitation {
     void setReferences(Set<IReference> references);
 
     Set<IReference> getReferences();
+
+    void setConceptTagIds(Set<String> conceptTagIds);
+
+    Set<String> getConceptTagIds();
 
 }

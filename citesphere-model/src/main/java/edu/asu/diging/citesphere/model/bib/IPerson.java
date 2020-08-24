@@ -2,6 +2,11 @@ package edu.asu.diging.citesphere.model.bib;
 
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+
+import edu.asu.diging.citesphere.model.bib.impl.Person;
+
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, defaultImpl = Person.class)
 public interface IPerson {
 
     String getName();
@@ -27,10 +32,6 @@ public interface IPerson {
     void setAffiliations(Set<IAffiliation> affiliations);
 
     Set<IAffiliation> getAffiliations();
-
-    void setId(String id);
-
-    String getId();
 
     void setLocalAuthorityId(String localAuthorityId);
 

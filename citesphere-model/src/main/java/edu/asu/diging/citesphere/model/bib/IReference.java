@@ -2,6 +2,11 @@ package edu.asu.diging.citesphere.model.bib;
 
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+
+import edu.asu.diging.citesphere.model.bib.impl.Reference;
+
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, defaultImpl = Reference.class)
 public interface IReference {
 
     String getAuthorString();

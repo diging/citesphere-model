@@ -2,46 +2,16 @@ package edu.asu.diging.citesphere.model.bib.impl;
 
 import java.util.Set;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.JoinTable;
-import javax.persistence.Lob;
-import javax.persistence.OneToMany;
-import javax.persistence.OrderBy;
-
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.NotFound;
-import org.hibernate.annotations.NotFoundAction;
-import org.hibernate.annotations.Parameter;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.bson.types.ObjectId;
 
 import edu.asu.diging.citesphere.model.bib.ICreator;
 import edu.asu.diging.citesphere.model.bib.IReference;
 
-@Entity
 public class Reference implements IReference {
 
-    @Id
-    @GeneratedValue(generator = "reference_id_generator")
-    @GenericGenerator(name = "reference_id_generator",    
-                    parameters = @Parameter(name = "prefix", value = "REF"), 
-                    strategy = "edu.asu.diging.citesphere.data.bib.IdGenerator"
-            )
-    @JsonIgnore
-    private String id;
-    
-    @Lob
     private String authorString;
-    @OneToMany(targetEntity=Creator.class, cascade=CascadeType.ALL, orphanRemoval=true)
-    @JoinTable(name="Reference_Contributor")
-    @OrderBy("role, positionInList")
-    @NotFound(action=NotFoundAction.IGNORE)
     private Set<ICreator> contributors;
     
-    @Lob
     private String title;
     private String year;
     private String identifier;
@@ -55,9 +25,7 @@ public class Reference implements IReference {
     private String publicationType;
     private String citationId;
     
-    @Lob
     private String referenceString;
-    @Lob
     private String referenceStringRaw;
     
     /* (non-Javadoc)

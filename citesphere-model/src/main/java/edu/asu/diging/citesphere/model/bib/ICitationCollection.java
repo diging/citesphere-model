@@ -1,5 +1,7 @@
 package edu.asu.diging.citesphere.model.bib;
 
+import org.bson.types.ObjectId;
+
 public interface ICitationCollection extends IGrouping {
 
     long getVersion();
@@ -14,9 +16,9 @@ public interface ICitationCollection extends IGrouping {
 
     void setNumberOfItems(long numberOfItems);
 
-    ICitationGroup getGroup();
+    String getGroupId();
 
-    void setGroup(ICitationGroup group);
+    void setGroupId(String group);
 
     void setParentCollectionKey(String parentCollectionKey);
 
@@ -25,5 +27,9 @@ public interface ICitationCollection extends IGrouping {
     void setLastModified(String lastModified);
 
     String getLastModified();
+
+    void setId(ObjectId id);
+
+    ObjectId getId();
 
 }

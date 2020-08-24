@@ -3,11 +3,13 @@ package edu.asu.diging.citesphere.model.bib;
 import java.time.OffsetDateTime;
 import java.util.List;
 
+import org.bson.types.ObjectId;
+
 public interface ICitationGroup extends IGrouping {
 
-    long getId();
+    ObjectId getId();
     
-    void setId(long id);
+    void setId(ObjectId id);
     
     long getVersion();
 
@@ -25,9 +27,9 @@ public interface ICitationGroup extends IGrouping {
 
     void setNumItems(long numItems);
 
-    List<ICitation> getCitations();
+    List<String> getCitations();
 
-    void setCitations(List<ICitation> citations);
+    void setCitations(List<String> citations);
 
     void setFileEditing(String fileEditing);
 
@@ -57,16 +59,20 @@ public interface ICitationGroup extends IGrouping {
 
     long getOwner();
 
-    void setUpdatedOn(OffsetDateTime updatedOn);
+    void setUpdatedOn(String updatedOn);
 
-    OffsetDateTime getUpdatedOn();
+    String getUpdatedOn();
 
-    void setLastLocallyModifiedOn(OffsetDateTime lastLocallyModifiedOn);
+    void setLastLocallyModifiedOn(String lastLocallyModifiedOn);
 
-    OffsetDateTime getLastLocallyModifiedOn();
+    String getLastLocallyModifiedOn();
 
     void setUsers(List<String> users);
 
     List<String> getUsers();
+
+    void setGroupId(long groupId);
+
+    long getGroupId();
 
 }

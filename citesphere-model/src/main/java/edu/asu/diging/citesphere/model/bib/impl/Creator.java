@@ -1,50 +1,25 @@
 package edu.asu.diging.citesphere.model.bib.impl;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
-
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.NotFound;
-import org.hibernate.annotations.NotFoundAction;
-import org.hibernate.annotations.Parameter;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.bson.types.ObjectId;
 
 import edu.asu.diging.citesphere.model.bib.ICreator;
 import edu.asu.diging.citesphere.model.bib.IPerson;
 
-@Entity
 public class Creator implements ICreator, Comparable<ICreator> {
 
-    @Id
-    @GeneratedValue(generator = "creator_id_generator")
-    @GenericGenerator(name = "creator_id_generator",    
-                    parameters = @Parameter(name = "prefix", value = "CR"), 
-                    strategy = "edu.asu.diging.citesphere.data.bib.IdGenerator"
-            )
-    @JsonIgnore
-    private String id;
-    
+    private ObjectId id;
     private String role;
-    
-    @OneToOne(targetEntity=Person.class, cascade=CascadeType.ALL)
-    @JoinColumn(name="person_id")
-    @NotFound(action=NotFoundAction.IGNORE)
     private IPerson person;
     
     // not ideal but ah well, crappy data model
     private int positionInList;
     
 
-    public String getId() {
+    public ObjectId getId() {
         return id;
     }
     
-    public void setId(String id) {
+    public void setId(ObjectId id) {
         this.id = id;
     }
     
