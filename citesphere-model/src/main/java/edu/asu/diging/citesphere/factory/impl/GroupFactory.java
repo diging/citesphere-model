@@ -19,7 +19,7 @@ public class GroupFactory implements IGroupFactory {
         citGroup.setGroupId(group.getId());
         citGroup.setCreated(group.getMeta().getCreated());
         citGroup.setLastModified(group.getMeta().getLastModified());
-        citGroup.setVersion(group.getVersion());
+        citGroup.setMetadataVersion(group.getVersion());
         citGroup.setName(group.getData().getName());
         citGroup.setDescription(group.getData().getDescription());
         citGroup.setFileEditing(group.getData().getFileEditing());

@@ -1,6 +1,5 @@
 package edu.asu.diging.citesphere.model.bib.impl;
 
-import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,7 +16,8 @@ public class CitationGroup implements ICitationGroup {
     private ObjectId id;
     private long groupId;
     private String name;
-    private long version;
+    private long metadataVersion;
+    private long contentVersion;
     private String created;
     private String lastModified;
     private long numItems;
@@ -78,16 +78,26 @@ public class CitationGroup implements ICitationGroup {
      * @see edu.asu.diging.citesphere.core.model.bib.impl.IGroup#getVersion()
      */
     @Override
-    public long getVersion() {
-        return version;
+    public long getMetadataVersion() {
+        return metadataVersion;
     }
 
     /* (non-Javadoc)
      * @see edu.asu.diging.citesphere.core.model.bib.impl.IGroup#setVersion(long)
      */
     @Override
-    public void setVersion(long version) {
-        this.version = version;
+    public void setMetadataVersion(long version) {
+        this.metadataVersion = version;
+    }
+
+    @Override
+    public long getContentVersion() {
+        return contentVersion;
+    }
+
+    @Override
+    public void setContentVersion(long contentVersion) {
+        this.contentVersion = contentVersion;
     }
 
     /* (non-Javadoc)

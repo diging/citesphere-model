@@ -11,9 +11,9 @@ public interface ICitationGroup extends IGrouping {
     
     void setId(ObjectId id);
     
-    long getVersion();
+    long getMetadataVersion();
 
-    void setVersion(long version);
+    void setMetadataVersion(long version);
 
     String getCreated();
 
@@ -74,5 +74,9 @@ public interface ICitationGroup extends IGrouping {
     void setGroupId(long groupId);
 
     long getGroupId();
+
+    void setContentVersion(long contentVersion);
+
+    long getContentVersion();
 
 }

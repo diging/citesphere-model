@@ -24,6 +24,7 @@ public class CitationCollectionFactory implements ICitationCollectionFactory {
         if (!collection.getData().getParentCollection().equals("false")) {
             citationCollection.setParentCollectionKey(collection.getData().getParentCollection());
         }
+        citationCollection.setGroupId(collection.getLibrary().getId() + "");
         citationCollection.setVersion(collection.getVersion());
         return citationCollection;
     }
