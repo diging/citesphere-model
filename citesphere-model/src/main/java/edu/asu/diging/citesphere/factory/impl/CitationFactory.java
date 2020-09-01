@@ -126,6 +126,7 @@ public class CitationFactory implements ICitationFactory {
         citation.setRights(item.getData().getRights());
         citation.setSeriesText(item.getData().getSeriesText());
         citation.setShortTitle(item.getData().getShortTitle());
+        citation.setCollections(item.getData().getCollections());
 
         citation.setDateAdded(item.getData().getDateAdded());
 

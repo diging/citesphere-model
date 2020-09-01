@@ -27,4 +27,14 @@ public class CitationMongoDao implements ICitationDao {
         return mongoTemplate.find(query, Citation.class);
     }
     
+    @Override
+    public List<? extends ICitation> findCitationsInCollection(String groupId, String collectionId, long start, int pageSize) {
+        Query query = new Query();
+        query.addCriteria(Criteria.where("group").is(groupId));
+        query.addCriteria(Criteria.where("collections").is(collectionId));
+        query.skip(start);
+        query.limit(pageSize);
+        return mongoTemplate.find(query, Citation.class);
+    }
+    
 }

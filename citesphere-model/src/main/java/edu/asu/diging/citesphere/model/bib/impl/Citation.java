@@ -1,7 +1,7 @@
 package edu.asu.diging.citesphere.model.bib.impl;
 
-import java.time.OffsetDateTime;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -57,6 +57,7 @@ public class Citation implements ICitation {
     private String libraryCatalog;
     private String callNumber;
     private String rights;
+    private List<String> collections;
     
     private String dateAdded;
     private String dateModified;
@@ -411,6 +412,14 @@ public class Citation implements ICitation {
     @Override
     public void setRights(String rights) {
         this.rights = rights;
+    }
+    @Override
+    public List<String> getCollections() {
+        return collections;
+    }
+    @Override
+    public void setCollections(List<String> collections) {
+        this.collections = collections;
     }
     @Override
     public String getDateAdded() {

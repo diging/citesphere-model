@@ -1,6 +1,7 @@
 package edu.asu.diging.citesphere.model.bib;
 
 import java.time.OffsetDateTime;
+import java.util.List;
 import java.util.Set;
 
 public interface ICitation {
@@ -152,5 +153,9 @@ public interface ICitation {
     void setConceptTagIds(Set<String> conceptTagIds);
 
     Set<String> getConceptTagIds();
+
+    void setCollections(List<String> collections);
+
+    List<String> getCollections();
 
 }
