@@ -9,7 +9,6 @@ import javax.persistence.Lob;
 
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.annotation.Transient;
 
 import edu.asu.diging.citesphere.model.bib.ICitation;
 import edu.asu.diging.citesphere.model.bib.ICitationConceptTag;
@@ -63,7 +62,6 @@ public class Citation implements ICitation {
     private String dateModified;
     
     private Set<String> conceptTagIds;
-    @Transient
     private Set<ICitationConceptTag> conceptTags;
     
     private Set<IReference> references;
