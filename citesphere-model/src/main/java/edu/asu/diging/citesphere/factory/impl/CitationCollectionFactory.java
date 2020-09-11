@@ -26,6 +26,7 @@ public class CitationCollectionFactory implements ICitationCollectionFactory {
         }
         citationCollection.setGroupId(collection.getLibrary().getId() + "");
         citationCollection.setVersion(collection.getVersion());
+        citationCollection.setContentVersion(collection.getContentVersion());
         return citationCollection;
     }
 }

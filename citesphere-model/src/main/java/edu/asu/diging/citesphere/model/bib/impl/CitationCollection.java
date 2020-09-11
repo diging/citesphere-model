@@ -15,6 +15,7 @@ public class CitationCollection implements ICitationCollection {
     @Column(name="collectionKey")
     private String key;
     private long version;
+    private long contentVersion;
     private long numberOfCollections;
     private long numberOfItems;
     private String name;
@@ -57,6 +58,14 @@ public class CitationCollection implements ICitationCollection {
     @Override
     public void setVersion(long version) {
         this.version = version;
+    }
+    @Override
+    public long getContentVersion() {
+        return contentVersion;
+    }
+    @Override
+    public void setContentVersion(long contentVersion) {
+        this.contentVersion = contentVersion;
     }
     /* (non-Javadoc)
      * @see edu.asu.diging.citesphere.core.model.bib.impl.ICitationCollection#getNumberOfCollections()

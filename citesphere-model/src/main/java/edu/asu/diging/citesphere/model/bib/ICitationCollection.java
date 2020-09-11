@@ -32,4 +32,8 @@ public interface ICitationCollection extends IGrouping {
 
     ObjectId getId();
 
+    void setContentVersion(long contentVersion);
+
+    long getContentVersion();
+
 }
