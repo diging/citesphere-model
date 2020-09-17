@@ -25,8 +25,4 @@ public interface ICitationConceptTag {
 
     String getConceptName();
 
-    String getId();
-
-    void setId(String id);
-
 }

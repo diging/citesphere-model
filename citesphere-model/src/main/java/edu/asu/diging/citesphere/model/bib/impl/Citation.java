@@ -1,81 +1,50 @@
 package edu.asu.diging.citesphere.model.bib.impl;
 
-import java.time.OffsetDateTime;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.Lob;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.OrderBy;
 
-import org.hibernate.annotations.NotFound;
-import org.hibernate.annotations.NotFoundAction;
-
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import org.bson.types.ObjectId;
+import org.springframework.data.annotation.Id;
 
 import edu.asu.diging.citesphere.model.bib.ICitation;
 import edu.asu.diging.citesphere.model.bib.ICitationConceptTag;
-import edu.asu.diging.citesphere.model.bib.ICitationGroup;
 import edu.asu.diging.citesphere.model.bib.ICreator;
 import edu.asu.diging.citesphere.model.bib.IPerson;
 import edu.asu.diging.citesphere.model.bib.IReference;
 import edu.asu.diging.citesphere.model.bib.ItemType;
 
-@Entity
+
 public class Citation implements ICitation {
 
     @Id
-    @Column(name="citationKey")
+    private ObjectId id;
     private String key;
     
-    @JsonManagedReference
-    @ManyToOne(targetEntity=CitationGroup.class)
-    @JoinColumn(name="group_id")
-    private ICitationGroup group;
+    private String group;
     
     private long version;
-    @Lob
     private String title;
-    @OneToMany(targetEntity=Person.class, cascade=CascadeType.ALL, orphanRemoval=true)
-    @JoinTable(name="Citation_Author")
-    @OrderBy("positionInList")
-    @NotFound(action=NotFoundAction.IGNORE)
     private Set<IPerson> authors;
-    @OneToMany(targetEntity=Person.class, cascade=CascadeType.ALL, orphanRemoval=true)
-    @JoinTable(name="Citation_Editor")
-    @OrderBy("positionInList")
-    @NotFound(action=NotFoundAction.IGNORE)
     private Set<IPerson> editors;
     
-    @OneToMany(targetEntity=Creator.class, cascade=CascadeType.ALL, orphanRemoval=true)
-    @JoinTable(name="Citation_Creator")
-    @OrderBy("role, positionInList")
-    @NotFound(action=NotFoundAction.IGNORE)
     private Set<ICreator> otherCreators;
     
     private ItemType itemType;
-    @Lob
     private String publicationTitle;
     private String volume;
     private String issue;
     private String pages;
-    private OffsetDateTime date;
+    private String date;
     private String dateFreetext;
     private String series;
-    @Lob
     private String seriesTitle;
     private String url;
-    @Lob
     private String abstractNote;
     private String accessDate;
-    @Lob
     private String seriesText;
     private String journalAbbreviation;
     private String language;
@@ -87,17 +56,14 @@ public class Citation implements ICitation {
     private String libraryCatalog;
     private String callNumber;
     private String rights;
+    private List<String> collections;
     
     private String dateAdded;
     private String dateModified;
     
-    @OneToMany(targetEntity=CitationConceptTag.class, cascade=CascadeType.ALL)
-    @JoinTable(name="CitationConcept_ConceptTag")
+    private Set<String> conceptTagIds;
     private Set<ICitationConceptTag> conceptTags;
     
-    @OneToMany(targetEntity=Reference.class, cascade=CascadeType.ALL, orphanRemoval=true)
-    @JoinTable(name="Citation_Reference")
-    @NotFound(action=NotFoundAction.IGNORE)
     private Set<IReference> references;
     
     @Lob
@@ -118,11 +84,11 @@ public class Citation implements ICitation {
         this.key = key;
     }
     @Override
-    public ICitationGroup getGroup() {
+    public String getGroup() {
         return group;
     }
     @Override
-    public void setGroup(ICitationGroup group) {
+    public void setGroup(String group) {
         this.group = group;
     }
     @Override
@@ -287,14 +253,14 @@ public class Citation implements ICitation {
      * @see edu.asu.diging.citesphere.core.model.bib.impl.ICitation#getDate()
      */
     @Override
-    public OffsetDateTime getDate() {
+    public String getDate() {
         return date;
     }
     /* (non-Javadoc)
      * @see edu.asu.diging.citesphere.core.model.bib.impl.ICitation#setDate(java.time.OffsetDateTime)
      */
     @Override
-    public void setDate(OffsetDateTime date) {
+    public void setDate(String date) {
         this.date = date;
     }
     @Override
@@ -446,6 +412,14 @@ public class Citation implements ICitation {
         this.rights = rights;
     }
     @Override
+    public List<String> getCollections() {
+        return collections;
+    }
+    @Override
+    public void setCollections(List<String> collections) {
+        this.collections = collections;
+    }
+    @Override
     public String getDateAdded() {
         return dateAdded;
     }
@@ -461,18 +435,22 @@ public class Citation implements ICitation {
     public void setDateModified(String dateModified) {
         this.dateModified = dateModified;
     }
+    
+    @Override
+    public Set<String> getConceptTagIds() {
+        return conceptTagIds;
+    }
+    @Override
+    public void setConceptTagIds(Set<String> conceptTagIds) {
+        this.conceptTagIds = conceptTagIds;
+    }
     @Override
     public Set<ICitationConceptTag> getConceptTags() {
         return conceptTags;
     }
     @Override
     public void setConceptTags(Set<ICitationConceptTag> concepts) {
-        // If we don't do the following, hibernate will complaining during update.
-        if (this.conceptTags != null) {
-            this.conceptTags.clear();
-            this.conceptTags.addAll(concepts);
-            return;
-        }
+        this.conceptTagIds = concepts.stream().map(c -> c.getLocalConceptId()).collect(Collectors.toSet());
         this.conceptTags = concepts;
     }
     @Override
@@ -481,13 +459,6 @@ public class Citation implements ICitation {
     }
     @Override
     public void setReferences(Set<IReference> references) {
-        // If we don't do the following, hibernate will complaining during update.
-        if (this.references != null) {
-            this.references.clear();
-            this.references.addAll(references);
-            return;
-        }
-        
         this.references = references;
     }
     @Override

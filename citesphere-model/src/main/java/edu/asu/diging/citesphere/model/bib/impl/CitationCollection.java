@@ -1,33 +1,36 @@
 package edu.asu.diging.citesphere.model.bib.impl;
 
 import javax.persistence.Column;
-import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+
+import org.bson.types.ObjectId;
 
 import edu.asu.diging.citesphere.model.bib.ICitationCollection;
-import edu.asu.diging.citesphere.model.bib.ICitationGroup;
 
-@Entity
 public class CitationCollection implements ICitationCollection {
 
     
     @Id
+    private ObjectId id;
     @Column(name="collectionKey")
     private String key;
     private long version;
+    private long contentVersion;
     private long numberOfCollections;
     private long numberOfItems;
     private String name;
     private String parentCollectionKey;
     private String lastModified;
+    private String groupId;
     
-    
-    @ManyToOne(targetEntity=CitationGroup.class)
-    @JoinColumn(name="group_id")
-    private ICitationGroup group;
-    
+    @Override
+    public ObjectId getId() {
+        return id;
+    }
+    @Override
+    public void setId(ObjectId id) {
+        this.id = id;
+    }
     /* (non-Javadoc)
      * @see edu.asu.diging.citesphere.core.model.bib.impl.ICitationCollection#getKey()
      */
@@ -55,6 +58,14 @@ public class CitationCollection implements ICitationCollection {
     @Override
     public void setVersion(long version) {
         this.version = version;
+    }
+    @Override
+    public long getContentVersion() {
+        return contentVersion;
+    }
+    @Override
+    public void setContentVersion(long contentVersion) {
+        this.contentVersion = contentVersion;
     }
     /* (non-Javadoc)
      * @see edu.asu.diging.citesphere.core.model.bib.impl.ICitationCollection#getNumberOfCollections()
@@ -106,20 +117,6 @@ public class CitationCollection implements ICitationCollection {
     public void setParentCollectionKey(String parentCollectionKey) {
         this.parentCollectionKey = parentCollectionKey;
     }
-    /* (non-Javadoc)
-     * @see edu.asu.diging.citesphere.core.model.bib.impl.ICitationCollection#getGroup()
-     */
-    @Override
-    public ICitationGroup getGroup() {
-        return group;
-    }
-    /* (non-Javadoc)
-     * @see edu.asu.diging.citesphere.core.model.bib.impl.ICitationCollection#setGroup(edu.asu.diging.citesphere.core.model.bib.ICitationGroup)
-     */
-    @Override
-    public void setGroup(ICitationGroup group) {
-        this.group = group;
-    }
     @Override
     public String getLastModified() {
         return lastModified;
@@ -127,6 +124,12 @@ public class CitationCollection implements ICitationCollection {
     @Override
     public void setLastModified(String lastModified) {
         this.lastModified = lastModified;
+    }
+    public String getGroupId() {
+        return groupId;
+    }
+    public void setGroupId(String groupId) {
+        this.groupId = groupId;
     }
     
 }

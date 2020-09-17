@@ -1,5 +1,6 @@
 package edu.asu.diging.citesphere.factory.impl;
 
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -44,7 +45,7 @@ public class CitationFactory implements ICitationFactory {
 
     @Autowired
     private IDateParser dateParser;
-
+    
     private List<BiConsumer<JsonObject, ICitation>> processFunctions;
 
     @PostConstruct
@@ -68,6 +69,7 @@ public class CitationFactory implements ICitationFactory {
     public ICitation createCitation(Item item) {
         Data data = item.getData();
         ICitation citation = new Citation();
+        citation.setGroup(item.getLibrary().getId() + "");
         citation.setIssue(data.getIssue());
         citation.setItemType(ItemType.getByZoteroKey(data.getItemType()));
         citation.setKey(item.getKey());
@@ -104,7 +106,10 @@ public class CitationFactory implements ICitationFactory {
         citation.setOtherCreators(creators);
         citation.setDateFreetext(item.getData().getDate());
         if (item.getData().getDate() != null) {
-            citation.setDate(dateParser.parse(item.getData().getDate()));
+            OffsetDateTime date = dateParser.parse(item.getData().getDate());
+            if (date != null) {
+                citation.setDate(date.toString());
+            }
         }
         citation.setUrl(item.getData().getUrl());
 
@@ -121,6 +126,7 @@ public class CitationFactory implements ICitationFactory {
         citation.setRights(item.getData().getRights());
         citation.setSeriesText(item.getData().getSeriesText());
         citation.setShortTitle(item.getData().getShortTitle());
+        citation.setCollections(item.getData().getCollections());
 
         citation.setDateAdded(item.getData().getDateAdded());
 

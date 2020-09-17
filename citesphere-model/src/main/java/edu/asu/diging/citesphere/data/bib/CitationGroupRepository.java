@@ -1,12 +1,16 @@
 package edu.asu.diging.citesphere.data.bib;
 
-import org.javers.spring.annotation.JaversSpringDataAuditable;
-import org.springframework.data.repository.PagingAndSortingRepository;
+import java.util.Optional;
 
+import org.bson.types.ObjectId;
+import org.javers.spring.annotation.JaversSpringDataAuditable;
+import org.springframework.data.mongodb.repository.MongoRepository;
+
+import edu.asu.diging.citesphere.model.bib.ICitationGroup;
 import edu.asu.diging.citesphere.model.bib.impl.CitationGroup;
 
 @JaversSpringDataAuditable
-public interface CitationGroupRepository extends PagingAndSortingRepository<CitationGroup, Long> {
+public interface CitationGroupRepository extends MongoRepository<CitationGroup, ObjectId> {
 
-    
+    Optional<ICitationGroup> findByGroupId(long groupId);
 }

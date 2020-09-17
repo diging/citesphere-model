@@ -2,56 +2,20 @@ package edu.asu.diging.citesphere.model.bib.impl;
 
 import java.util.Set;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.JoinTable;
-import javax.persistence.Lob;
-import javax.persistence.OneToMany;
-
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import edu.asu.diging.citesphere.model.bib.IAffiliation;
 import edu.asu.diging.citesphere.model.bib.IPerson;
 
-@Entity
 public class Person implements IPerson, Comparable<Person> {
 
-    @Id
-    @GeneratedValue(generator = "person_id_generator")
-    @GenericGenerator(name = "person_id_generator",    
-                    parameters = @Parameter(name = "prefix", value = "PE"), 
-                    strategy = "edu.asu.diging.citesphere.data.bib.IdGenerator"
-            )
-    @JsonIgnore
-    private String id;
-    @Lob
     private String name;
     private String uri;
     private String localAuthorityId;
-    @Lob
     private String firstName;
-    @Lob
     private String lastName;
     private int positionInList;
     
-    @OneToMany(targetEntity=Affiliation.class, cascade=CascadeType.ALL)
-    @JoinTable(name="Person_Affiliation")
     private Set<IAffiliation> affiliations;
    
-    
-    @Override
-    public String getId() {
-        return id;
-    }
-    @Override
-    public void setId(String id) {
-        this.id = id;
-    }
     /* (non-Javadoc)
      * @see edu.asu.diging.citesphere.core.model.bib.impl.IPerson#getName()
      */

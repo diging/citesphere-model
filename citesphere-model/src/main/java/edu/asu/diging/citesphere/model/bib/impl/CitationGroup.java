@@ -1,28 +1,23 @@
 package edu.asu.diging.citesphere.model.bib.impl;
 
-import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.ElementCollection;
-import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 
-import org.javers.core.metamodel.annotation.DiffIgnore;
+import org.bson.types.ObjectId;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-
-import edu.asu.diging.citesphere.model.bib.ICitation;
 import edu.asu.diging.citesphere.model.bib.ICitationGroup;
 
-@Entity(name="Citation_Group")
 public class CitationGroup implements ICitationGroup {
 
     @Id
-    private long id;
+    private ObjectId id;
+    private long groupId;
     private String name;
-    private long version;
+    private long metadataVersion;
+    private long contentVersion;
     private String created;
     private String lastModified;
     private long numItems;
@@ -35,13 +30,10 @@ public class CitationGroup implements ICitationGroup {
     private String libraryReading;
     private String fileEditing;
     
-    private OffsetDateTime updatedOn;
-    private OffsetDateTime lastLocallyModifiedOn;
+    private String updatedOn;
+    private String lastLocallyModifiedOn;
     
-    @DiffIgnore
-    @JsonBackReference
-    @OneToMany(targetEntity=Citation.class, mappedBy="group")
-    private List<ICitation> citations;
+    private List<String> citations;
     
     @ElementCollection
     private List<String> users = new ArrayList<String>();
@@ -50,7 +42,7 @@ public class CitationGroup implements ICitationGroup {
      * @see edu.asu.diging.citesphere.core.model.bib.impl.IGroup#getId()
      */
     @Override
-    public long getId() {
+    public ObjectId getId() {
         return id;
     }
 
@@ -58,8 +50,18 @@ public class CitationGroup implements ICitationGroup {
      * @see edu.asu.diging.citesphere.core.model.bib.impl.IGroup#setId(long)
      */
     @Override
-    public void setId(long id) {
+    public void setId(ObjectId id) {
         this.id = id;
+    }
+
+    @Override
+    public long getGroupId() {
+        return groupId;
+    }
+
+    @Override
+    public void setGroupId(long groupId) {
+        this.groupId = groupId;
     }
 
     @Override
@@ -76,16 +78,26 @@ public class CitationGroup implements ICitationGroup {
      * @see edu.asu.diging.citesphere.core.model.bib.impl.IGroup#getVersion()
      */
     @Override
-    public long getVersion() {
-        return version;
+    public long getMetadataVersion() {
+        return metadataVersion;
     }
 
     /* (non-Javadoc)
      * @see edu.asu.diging.citesphere.core.model.bib.impl.IGroup#setVersion(long)
      */
     @Override
-    public void setVersion(long version) {
-        this.version = version;
+    public void setMetadataVersion(long version) {
+        this.metadataVersion = version;
+    }
+
+    @Override
+    public long getContentVersion() {
+        return contentVersion;
+    }
+
+    @Override
+    public void setContentVersion(long contentVersion) {
+        this.contentVersion = contentVersion;
     }
 
     /* (non-Javadoc)
@@ -140,7 +152,7 @@ public class CitationGroup implements ICitationGroup {
      * @see edu.asu.diging.citesphere.core.model.bib.impl.IGroup#getCitations()
      */
     @Override
-    public List<ICitation> getCitations() {
+    public List<String> getCitations() {
         return citations;
     }
 
@@ -148,7 +160,7 @@ public class CitationGroup implements ICitationGroup {
      * @see edu.asu.diging.citesphere.core.model.bib.impl.IGroup#setCitations(java.util.List)
      */
     @Override
-    public void setCitations(List<ICitation> citations) {
+    public void setCitations(List<String> citations) {
         this.citations = citations;
     }
 
@@ -223,22 +235,22 @@ public class CitationGroup implements ICitationGroup {
     }
 
     @Override
-    public OffsetDateTime getUpdatedOn() {
+    public String getUpdatedOn() {
         return updatedOn;
     }
 
     @Override
-    public void setUpdatedOn(OffsetDateTime updatedOn) {
+    public void setUpdatedOn(String updatedOn) {
         this.updatedOn = updatedOn;
     }
 
     @Override
-    public OffsetDateTime getLastLocallyModifiedOn() {
+    public String getLastLocallyModifiedOn() {
         return lastLocallyModifiedOn;
     }
 
     @Override
-    public void setLastLocallyModifiedOn(OffsetDateTime lastLocallyModifiedOn) {
+    public void setLastLocallyModifiedOn(String lastLocallyModifiedOn) {
         this.lastLocallyModifiedOn = lastLocallyModifiedOn;
     }
 

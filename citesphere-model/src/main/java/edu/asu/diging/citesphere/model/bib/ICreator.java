@@ -1,5 +1,12 @@
 package edu.asu.diging.citesphere.model.bib;
 
+import org.bson.types.ObjectId;
+
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+
+import edu.asu.diging.citesphere.model.bib.impl.Creator;
+
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, defaultImpl = Creator.class)
 public interface ICreator {
 
     String getRole();
@@ -14,6 +21,6 @@ public interface ICreator {
 
     int getPositionInList();
 
-    String getId();
+    ObjectId getId();
     
 }
