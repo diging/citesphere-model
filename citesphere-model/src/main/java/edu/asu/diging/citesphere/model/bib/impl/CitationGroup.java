@@ -266,7 +266,7 @@ public class CitationGroup implements ICitationGroup {
 
     @Override
     public String getKey() {
-        return id + "";
+        return groupId + "";
     }
 
     /**
