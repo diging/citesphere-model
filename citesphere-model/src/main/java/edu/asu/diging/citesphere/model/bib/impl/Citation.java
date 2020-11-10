@@ -5,8 +5,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import javax.persistence.Lob;
-
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 
@@ -65,8 +63,8 @@ public class Citation implements ICitation {
     private Set<ICitationConceptTag> conceptTags;
     
     private Set<IReference> references;
+    private Set<GilesUpload> gilesUploads;
     
-    @Lob
     private String extra;
     
     /* (non-Javadoc)
@@ -460,6 +458,14 @@ public class Citation implements ICitation {
     @Override
     public void setReferences(Set<IReference> references) {
         this.references = references;
+    }
+    @Override
+    public Set<GilesUpload> getGilesUploads() {
+        return gilesUploads;
+    }
+    @Override
+    public void setGilesUploads(Set<GilesUpload> gilesUploads) {
+        this.gilesUploads = gilesUploads;
     }
     @Override
     public String getExtra() {

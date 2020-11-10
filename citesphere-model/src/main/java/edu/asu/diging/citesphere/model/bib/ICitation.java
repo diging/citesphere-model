@@ -4,6 +4,8 @@ import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Set;
 
+import edu.asu.diging.citesphere.model.bib.impl.GilesUpload;
+
 public interface ICitation {
 
     String getKey();
@@ -157,5 +159,9 @@ public interface ICitation {
     void setCollections(List<String> collections);
 
     List<String> getCollections();
+
+    void setGilesUploads(Set<GilesUpload> gilesUploads);
+
+    Set<GilesUpload> getGilesUploads();
 
 }
