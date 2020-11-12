@@ -80,6 +80,7 @@ public class CitationFactory implements ICitationFactory {
         citation.setTitle(data.getTitle());
         citation.setVolume(data.getVolume());
         citation.setVersion(data.getVersion());
+        citation.setDeleted(data.getDeleted());
 
         Set<IPerson> authors = new TreeSet<>();
         Set<IPerson> editors = new TreeSet<>();
