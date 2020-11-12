@@ -57,6 +57,7 @@ public class Citation implements ICitation {
     private String callNumber;
     private String rights;
     private List<String> collections;
+    private int deleted;
     
     private String dateAdded;
     private String dateModified;
@@ -418,6 +419,14 @@ public class Citation implements ICitation {
     @Override
     public void setCollections(List<String> collections) {
         this.collections = collections;
+    }
+    @Override
+    public int getDeleted() {
+        return deleted;
+    }
+    @Override
+    public void setDeleted(int deleted) {
+        this.deleted = deleted;
     }
     @Override
     public String getDateAdded() {

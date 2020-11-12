@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 
 import edu.asu.diging.citesphere.data.bib.ICitationDao;
 import edu.asu.diging.citesphere.model.bib.ICitation;
+import edu.asu.diging.citesphere.model.bib.ItemType;
 import edu.asu.diging.citesphere.model.bib.impl.Citation;
 
 @Repository
@@ -20,9 +21,15 @@ public class CitationMongoDao implements ICitationDao {
     private MongoTemplate mongoTemplate;
     
     @Override
-    public List<? extends ICitation> findCitations(String groupId, long start, int pageSize) {
+    public List<? extends ICitation> findCitations(String groupId, long start, int pageSize, boolean isDeleted) {
         Query query = new Query();
         query.addCriteria(Criteria.where("group").is(groupId));
+        query.addCriteria(Criteria.where("itemType").ne(ItemType.NOTE.name()));
+        if (!isDeleted) {
+            query.addCriteria(new Criteria().orOperator(Criteria.where("deleted").exists(false), Criteria.where("deleted").is(0)));
+        } else {
+            query.addCriteria(Criteria.where("deleted").is(1));
+        }
         query.skip(start);
         query.limit(pageSize);
         return mongoTemplate.find(query, Citation.class);
