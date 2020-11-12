@@ -158,4 +158,8 @@ public interface ICitation {
 
     List<String> getCollections();
 
+    void setDeleted(int deleted);
+
+    int getDeleted();
+
 }
