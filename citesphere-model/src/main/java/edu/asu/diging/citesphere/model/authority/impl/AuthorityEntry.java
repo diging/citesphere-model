@@ -2,14 +2,11 @@ package edu.asu.diging.citesphere.model.authority.impl;
 
 import java.time.OffsetDateTime;
 import java.util.List;
-
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Lob;
-import javax.persistence.OneToMany;
-
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 import edu.asu.diging.citesphere.model.authority.IAuthorityEntry;
@@ -118,7 +115,4 @@ public class AuthorityEntry implements IAuthorityEntry {
     public void setGroups(List<Long> groups) {
         this.groups = groups;
     }
-    
-  
-    
 }
