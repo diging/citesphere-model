@@ -39,5 +39,4 @@ public interface IAuthorityEntry {
     List<Long> getGroups();
     
     void setGroups(List<Long> groups);
-
 }
