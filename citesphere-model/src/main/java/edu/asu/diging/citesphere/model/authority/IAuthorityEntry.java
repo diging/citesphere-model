@@ -1,10 +1,7 @@
 package edu.asu.diging.citesphere.model.authority;
 
 import java.time.OffsetDateTime;
-import java.util.List;
-
-import edu.asu.diging.citesphere.model.bib.ICitationGroup;
-import edu.asu.diging.citesphere.model.bib.impl.CitationGroup;
+import java.util.Set;
 
 public interface IAuthorityEntry {
 
@@ -36,7 +33,7 @@ public interface IAuthorityEntry {
 
     String getDescription();
     
-    List<Long> getGroups();
+    Set<Long> getGroups();
     
-    void setGroups(List<Long> groups);
+    void setGroups(Set<Long> groups);
 }
