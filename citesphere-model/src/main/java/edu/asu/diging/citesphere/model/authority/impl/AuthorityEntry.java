@@ -1,7 +1,7 @@
 package edu.asu.diging.citesphere.model.authority.impl;
 
 import java.time.OffsetDateTime;
-import java.util.List;
+import java.util.Set;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -31,7 +31,7 @@ public class AuthorityEntry implements IAuthorityEntry {
     private OffsetDateTime createdOn;
     
     @ElementCollection
-    private List<Long> groups;
+    private Set<Long> groups;
     
     /* (non-Javadoc)
      * @see edu.asu.diging.citesphere.core.model.authority.impl.IAuthorityEntry#getId()
@@ -108,11 +108,11 @@ public class AuthorityEntry implements IAuthorityEntry {
         this.createdOn = createdOn;
     }
     @Override
-    public List<Long> getGroups() {
+    public Set<Long> getGroups() {
         return groups;
     }
     @Override
-    public void setGroups(List<Long> groups) {
+    public void setGroups(Set<Long> groups) {
         this.groups = groups;
     }
 }
