@@ -160,8 +160,13 @@ public interface ICitation {
 
     List<String> getCollections();
 
+    void setDeleted(int deleted);
+
+    int getDeleted();
+    
     void setGilesUploads(Set<GilesUpload> gilesUploads);
 
     Set<GilesUpload> getGilesUploads();
+    
 
 }

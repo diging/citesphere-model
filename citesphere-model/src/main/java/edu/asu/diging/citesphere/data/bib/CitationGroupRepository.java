@@ -12,5 +12,5 @@ import edu.asu.diging.citesphere.model.bib.impl.CitationGroup;
 @JaversSpringDataAuditable
 public interface CitationGroupRepository extends MongoRepository<CitationGroup, ObjectId> {
 
-    Optional<ICitationGroup> findByGroupId(long groupId);
+    Optional<ICitationGroup> findFirstByGroupId(long groupId);
 }
