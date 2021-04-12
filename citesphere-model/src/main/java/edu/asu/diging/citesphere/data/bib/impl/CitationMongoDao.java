@@ -24,7 +24,7 @@ public class CitationMongoDao implements ICitationDao {
     public List<? extends ICitation> findCitations(String groupId, long start, int pageSize, boolean isDeleted) {
         Query query = new Query();
         query.addCriteria(Criteria.where("group").is(groupId));
-        query.addCriteria(Criteria.where("itemType").ne(ItemType.NOTE.name()));
+        query.addCriteria(Criteria.where("itemType").ne(ItemType.NOTE.name()).andOperator(Criteria.where("itemType").ne(ItemType.ATTACHMENT.name())));
         if (!isDeleted) {
             query.addCriteria(new Criteria().orOperator(Criteria.where("deleted").exists(false), Criteria.where("deleted").is(0)));
         } else {
@@ -59,6 +59,7 @@ public class CitationMongoDao implements ICitationDao {
         Query query = new Query();
         query.addCriteria(Criteria.where("group").is(groupId));
         query.addCriteria(Criteria.where("collections").is(collectionId));
+        query.addCriteria(Criteria.where("itemType").ne(ItemType.ATTACHMENT.name()));
         query.skip(start);
         query.limit(pageSize);
         return mongoTemplate.find(query, Citation.class);
