@@ -33,7 +33,7 @@
     </scm>
 
     <properties>
-        <spring.version>5.2.7.RELEASE</spring.version>
+        <spring.version>5.2.9.RELEASE</spring.version>
         <spring-data.version>Neumann-SR4</spring-data.version>
         <com.fasterxml.jackson.version>2.9.10.1</com.fasterxml.jackson.version>
         <spring-security-version>5.1.5.RELEASE</spring-security-version>
