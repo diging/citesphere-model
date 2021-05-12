@@ -2,18 +2,24 @@ package edu.asu.diging.citesphere.model.bib.impl;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+import edu.asu.diging.citesphere.model.bib.GilesStatus;
 import edu.asu.diging.citesphere.model.bib.IGilesUpload;
 
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class GilesUpload implements IGilesUpload {
 
     private String progressId;
     private String documentId;
     private String uploadId;
-    private String uploadDate;
+    private String uploadedDate;
     private IGilesFile uploadedFile;
     private IGilesFile extractedText;
     private List<GilesFile> additionaFiles;
     private List<GilesPage> pages;
+    private GilesStatus documentStatus;
+    private String uploadingUser;
     
     /* (non-Javadoc)
      * @see edu.asu.diging.citesphere.model.bib.impl.IGilesUpload#getProgressId()
@@ -61,15 +67,15 @@ public class GilesUpload implements IGilesUpload {
      * @see edu.asu.diging.citesphere.model.bib.impl.IGilesUpload#getUploadDate()
      */
     @Override
-    public String getUploadDate() {
-        return uploadDate;
+    public String getUploadedDate() {
+        return uploadedDate;
     }
     /* (non-Javadoc)
      * @see edu.asu.diging.citesphere.model.bib.impl.IGilesUpload#setUploadDate(java.lang.String)
      */
     @Override
-    public void setUploadDate(String uploadDate) {
-        this.uploadDate = uploadDate;
+    public void setUploadedDate(String uploadDate) {
+        this.uploadedDate = uploadDate;
     }
     /* (non-Javadoc)
      * @see edu.asu.diging.citesphere.model.bib.impl.IGilesUpload#getUploadedFile()
@@ -126,5 +132,21 @@ public class GilesUpload implements IGilesUpload {
     @Override
     public void setPages(List<GilesPage> pages) {
         this.pages = pages;
+    }
+    @Override
+    public GilesStatus getDocumentStatus() {
+        return documentStatus;
+    }
+    @Override
+    public void setDocumentStatus(GilesStatus status) {
+        this.documentStatus = status;
+    }
+    @Override
+    public String getUploadingUser() {
+        return uploadingUser;
+    }
+    @Override
+    public void setUploadingUser(String uploadingUser) {
+        this.uploadingUser = uploadingUser;
     }
 }

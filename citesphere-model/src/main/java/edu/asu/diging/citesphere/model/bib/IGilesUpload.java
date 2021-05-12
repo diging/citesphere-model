@@ -24,9 +24,9 @@ public interface IGilesUpload {
 
     void setUploadId(String uploadId);
 
-    String getUploadDate();
+    String getUploadedDate();
 
-    void setUploadDate(String uploadDate);
+    void setUploadedDate(String uploadDate);
 
     IGilesFile getUploadedFile();
 
@@ -43,5 +43,13 @@ public interface IGilesUpload {
     List<GilesPage> getPages();
 
     void setPages(List<GilesPage> pages);
+
+    void setDocumentStatus(GilesStatus status);
+
+    GilesStatus getDocumentStatus();
+
+    void setUploadingUser(String uploadingUser);
+
+    String getUploadingUser();
 
 }

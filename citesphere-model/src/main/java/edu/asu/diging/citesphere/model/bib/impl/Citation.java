@@ -11,6 +11,7 @@ import org.springframework.data.annotation.Id;
 import edu.asu.diging.citesphere.model.bib.ICitation;
 import edu.asu.diging.citesphere.model.bib.ICitationConceptTag;
 import edu.asu.diging.citesphere.model.bib.ICreator;
+import edu.asu.diging.citesphere.model.bib.IGilesUpload;
 import edu.asu.diging.citesphere.model.bib.IPerson;
 import edu.asu.diging.citesphere.model.bib.IReference;
 import edu.asu.diging.citesphere.model.bib.ItemType;
@@ -64,7 +65,7 @@ public class Citation implements ICitation {
     private Set<ICitationConceptTag> conceptTags;
     
     private Set<IReference> references;
-    private Set<GilesUpload> gilesUploads;
+    private Set<IGilesUpload> gilesUploads;
     
     private String extra;
     
@@ -469,11 +470,11 @@ public class Citation implements ICitation {
         this.references = references;
     }
     @Override
-    public Set<GilesUpload> getGilesUploads() {
+    public Set<IGilesUpload> getGilesUploads() {
         return gilesUploads;
     }
     @Override
-    public void setGilesUploads(Set<GilesUpload> gilesUploads) {
+    public void setGilesUploads(Set<IGilesUpload> gilesUploads) {
         this.gilesUploads = gilesUploads;
     }
     @Override

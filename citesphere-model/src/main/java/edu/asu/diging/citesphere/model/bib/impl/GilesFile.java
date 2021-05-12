@@ -1,5 +1,8 @@
 package edu.asu.diging.citesphere.model.bib.impl;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class GilesFile implements IGilesFile {
     
     private String id;

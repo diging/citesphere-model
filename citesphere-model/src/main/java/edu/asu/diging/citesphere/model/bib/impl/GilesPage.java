@@ -2,6 +2,9 @@ package edu.asu.diging.citesphere.model.bib.impl;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class GilesPage implements IGilesPage {
 
     private int page;
