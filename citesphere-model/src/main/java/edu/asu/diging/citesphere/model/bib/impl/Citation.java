@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
 
 import edu.asu.diging.citesphere.model.bib.ICitation;
 import edu.asu.diging.citesphere.model.bib.ICitationConceptTag;
@@ -21,6 +22,7 @@ public class Citation implements ICitation {
 
     @Id
     private ObjectId id;
+    @Indexed(unique=true)
     private String key;
     
     private String group;
