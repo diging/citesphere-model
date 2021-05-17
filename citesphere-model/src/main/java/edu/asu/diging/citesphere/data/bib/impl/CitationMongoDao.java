@@ -59,7 +59,7 @@ public class CitationMongoDao implements ICitationDao {
         Query query = new Query();
         query.addCriteria(Criteria.where("group").is(groupId));
         query.addCriteria(Criteria.where("collections").is(collectionId));
-        query.addCriteria(Criteria.where("itemType").ne(ItemType.ATTACHMENT.name()));
+        query.addCriteria(Criteria.where("itemType").ne(ItemType.NOTE.name()).andOperator(Criteria.where("itemType").ne(ItemType.ATTACHMENT.name())));
         query.skip(start);
         query.limit(pageSize);
         return mongoTemplate.find(query, Citation.class);
