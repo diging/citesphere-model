@@ -17,4 +17,6 @@ public interface CitationRepository extends MongoRepository<Citation, ObjectId> 
     List<ICitation> findByGroupAndAuthorsUri(ICitationGroup group, String uri);
     
     Optional<ICitation> findByKey(String key);
+    
+    List<ICitation> findByParentItemAndItemType(String parentItem, String itemType);
 }

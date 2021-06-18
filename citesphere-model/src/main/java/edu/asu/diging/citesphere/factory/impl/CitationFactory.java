@@ -78,6 +78,7 @@ public class CitationFactory implements ICitationFactory {
         citation.setSeries(data.getSeries());
         citation.setSeriesTitle(data.getSeriesTitle());
         citation.setTitle(data.getTitle());
+        citation.setParentItem(data.getParentItem());
         citation.setVolume(data.getVolume());
         citation.setVersion(data.getVersion());
         citation.setDeleted(data.getDeleted());

@@ -13,6 +13,10 @@ public interface ICitation {
     String getTitle();
 
     void setTitle(String title);
+    
+    String getParentItem();
+    
+    void setParentItem(String parentItem);
 
     Set<IPerson> getAuthors();
 
