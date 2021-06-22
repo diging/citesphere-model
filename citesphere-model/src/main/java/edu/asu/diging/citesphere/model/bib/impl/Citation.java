@@ -116,13 +116,13 @@ public class Citation implements ICitation {
         this.title = title;
     }
     /* (non-Javadoc)
-     * @see edu.asu.diging.citesphere.core.model.bib.impl.ICitation#getParentItem()
+     * @see edu.asu.diging.citesphere.core.model.bib.ICitation#getParentItem()
      */
     public String getParentItem() {
         return parentItem;
     }
     /* (non-Javadoc)
-     * @see edu.asu.diging.citesphere.core.model.bib.impl.ICitation#setParentItem(java.lang.String)
+     * @see edu.asu.diging.citesphere.core.model.bib.ICitation#setParentItem(java.lang.String)
      */
     public void setParentItem(String parentItem) {
         this.parentItem = parentItem;
