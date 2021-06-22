@@ -18,5 +18,5 @@ public interface CitationRepository extends MongoRepository<Citation, ObjectId> 
     
     Optional<ICitation> findByKey(String key);
     
-    List<ICitation> findByParentItemAndItemType(String parentItem, String itemType);
+    List<ICitation> findByParentItemAndItemTypeAndDeleted(String parentItem, String itemType, int deleted);
 }
