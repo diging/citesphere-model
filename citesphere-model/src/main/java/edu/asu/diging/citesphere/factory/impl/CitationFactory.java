@@ -66,7 +66,7 @@ public class CitationFactory implements ICitationFactory {
      * org.springframework.social.zotero.api.Item)
      */
     @Override
-    public ICitation createCitation(Item item) {
+    public ICitation createCitation(Item item, Item metaData) {
         Data data = item.getData();
         ICitation citation = new Citation();
         citation.setGroup(item.getLibrary().getId() + "");
@@ -131,7 +131,12 @@ public class CitationFactory implements ICitationFactory {
 
         citation.setDateAdded(item.getData().getDateAdded());
 
-        parseExtra(data, citation);
+        if (metaData != null) {
+            parseNote(metaData, citation);
+        } else {
+            parseExtra(data, citation);
+        }
+        
         return citation;
     }
 
@@ -169,6 +174,21 @@ public class CitationFactory implements ICitationFactory {
             for (BiConsumer<JsonObject, ICitation> processFunction : processFunctions) {
                 processFunction.accept(jObj, citation);
             }
+        }
+    }
+
+    private void parseNote(Item metaData, ICitation citation) {
+        Data data = metaData.getData();
+        if (data.getNote() == null || data.getNote().trim().isEmpty()) {
+            return;
+        }
+
+        String note = data.getNote().trim();
+        JsonParser parser = new JsonParser();
+        JsonObject jObj = parser.parse(note).getAsJsonObject();
+
+        for (BiConsumer<JsonObject, ICitation> processFunction : processFunctions) {
+            processFunction.accept(jObj, citation);
         }
     }
 

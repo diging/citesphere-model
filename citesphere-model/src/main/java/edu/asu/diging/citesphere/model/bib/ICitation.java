@@ -133,6 +133,14 @@ public interface ICitation {
     void setGroup(String group);
 
     String getGroup();
+    
+    String getMetaDataItemKey();
+    
+    void setMetaDataItemKey(String metaDataItemKey);
+    
+    long getMetaDataItemVersion();
+    
+    void setMetaDataItemVersion(long metaDataItemVersion);
 
     void setOtherCreators(Set<ICreator> otherCreators);
 

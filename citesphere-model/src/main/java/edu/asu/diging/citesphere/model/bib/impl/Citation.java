@@ -59,6 +59,9 @@ public class Citation implements ICitation {
     private List<String> collections;
     private int deleted;
     
+    private String metaDataItemKey;
+    private long metaDataItemVersion;
+    
     private String dateAdded;
     private String dateModified;
     
@@ -486,6 +489,22 @@ public class Citation implements ICitation {
             otherCreators.forEach(c -> roles.add(c.getRole()));
         }
         return roles;
+    }
+    @Override
+    public String getMetaDataItemKey() {
+        return metaDataItemKey;
+    }
+    @Override
+    public void setMetaDataItemKey(String metaDataItemKey) {
+        this.metaDataItemKey = metaDataItemKey;
+    }
+    @Override
+    public long getMetaDataItemVersion() {
+        return metaDataItemVersion;
+    }
+    @Override
+    public void setMetaDataItemVersion(long metaDataItemVersion) {
+        this.metaDataItemVersion = metaDataItemVersion;
     }
     
 }
