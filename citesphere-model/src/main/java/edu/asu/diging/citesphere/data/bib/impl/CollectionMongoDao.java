@@ -30,7 +30,7 @@ public class CollectionMongoDao implements ICollectionMongoDao {
         } else {
             query = query.addCriteria(Criteria.where("parentCollectionKey").exists(false));
         }
-        
+       
         return mongoTemplate.find(query, CitationCollection.class);
     }
 }
