@@ -1,6 +1,5 @@
 package edu.asu.diging.citesphere.model.bib;
 
-import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Set;
 
@@ -161,5 +160,10 @@ public interface ICitation {
     void setDeleted(int deleted);
 
     int getDeleted();
+    
+    void setGilesUploads(Set<IGilesUpload> gilesUploads);
+
+    Set<IGilesUpload> getGilesUploads();
+    
 
 }
