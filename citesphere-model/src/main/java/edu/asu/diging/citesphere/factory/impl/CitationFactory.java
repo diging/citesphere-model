@@ -142,12 +142,28 @@ public class CitationFactory implements ICitationFactory {
         citation.setDateAdded(item.getData().getDateAdded());
 
         if (metaData != null) {
-            parseNote(metaData, citation);
+            parseMetaDataNote(citation, metaData);
         } else {
             parseExtra(data, citation);
         }
         
         return citation;
+    }
+    
+    @Override
+    public void parseMetaDataNote(ICitation citation, Item metaData) {
+        Data data = metaData.getData();
+        if (data.getNote() == null || data.getNote().trim().isEmpty()) {
+            return;
+        }
+
+        String note = data.getNote().trim();
+        JsonParser parser = new JsonParser();
+        JsonObject jObj = parser.parse(note).getAsJsonObject();
+
+        for (BiConsumer<JsonObject, ICitation> processFunction : processFunctions) {
+            processFunction.accept(jObj, citation);
+        }
     }
 
     private IPerson createPerson(Creator creator, int index) {
@@ -172,7 +188,6 @@ public class CitationFactory implements ICitationFactory {
         }
 
         String extra = data.getExtra();
-        citation.setExtra(extra);
         String citespherePattern = ExtraData.CITESPHERE_PATTERN;
         Pattern pattern = Pattern.compile(citespherePattern);
         Matcher match = pattern.matcher(extra);
@@ -184,21 +199,6 @@ public class CitationFactory implements ICitationFactory {
             for (BiConsumer<JsonObject, ICitation> processFunction : processFunctions) {
                 processFunction.accept(jObj, citation);
             }
-        }
-    }
-
-    private void parseNote(Item metaData, ICitation citation) {
-        Data data = metaData.getData();
-        if (data.getNote() == null || data.getNote().trim().isEmpty()) {
-            return;
-        }
-
-        String note = data.getNote().trim();
-        JsonParser parser = new JsonParser();
-        JsonObject jObj = parser.parse(note).getAsJsonObject();
-
-        for (BiConsumer<JsonObject, ICitation> processFunction : processFunctions) {
-            processFunction.accept(jObj, citation);
         }
     }
 

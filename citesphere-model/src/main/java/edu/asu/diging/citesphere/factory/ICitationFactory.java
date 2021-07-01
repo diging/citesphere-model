@@ -7,5 +7,7 @@ import edu.asu.diging.citesphere.model.bib.ICitation;
 public interface ICitationFactory {
 
     ICitation createCitation(Item item, Item metaData);
+    
+    void parseMetaDataNote(ICitation citation, Item metaData);
 
 }
