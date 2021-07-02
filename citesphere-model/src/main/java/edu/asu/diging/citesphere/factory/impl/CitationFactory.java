@@ -156,8 +156,12 @@ public class CitationFactory implements ICitationFactory {
         if (data.getNote() == null || data.getNote().trim().isEmpty()) {
             return;
         }
-
-        String note = data.getNote().trim();
+        
+        citation.setMetaDataItemKey(metaData.getKey());
+        citation.setMetaDataItemVersion(metaData.getVersion());
+        
+        String note = data.getNote();
+        note = note.replace("<p>", "").replace("</p>", "").trim();
         JsonParser parser = new JsonParser();
         JsonObject jObj = parser.parse(note).getAsJsonObject();
 
