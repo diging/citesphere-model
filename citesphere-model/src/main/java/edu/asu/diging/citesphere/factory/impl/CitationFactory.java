@@ -1,5 +1,6 @@
 package edu.asu.diging.citesphere.factory.impl;
 
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -13,12 +14,17 @@ import java.util.regex.Pattern;
 
 import javax.annotation.PostConstruct;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.social.zotero.api.Creator;
 import org.springframework.social.zotero.api.Data;
 import org.springframework.social.zotero.api.Item;
 import org.springframework.stereotype.Component;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -37,11 +43,14 @@ import edu.asu.diging.citesphere.model.bib.ItemType;
 import edu.asu.diging.citesphere.model.bib.impl.Affiliation;
 import edu.asu.diging.citesphere.model.bib.impl.Citation;
 import edu.asu.diging.citesphere.model.bib.impl.CitationConceptTag;
+import edu.asu.diging.citesphere.model.bib.impl.GilesUpload;
 import edu.asu.diging.citesphere.model.bib.impl.Person;
 import edu.asu.diging.citesphere.model.bib.impl.Reference;
 
 @Component
 public class CitationFactory implements ICitationFactory {
+    
+    private final Logger logger = LoggerFactory.getLogger(getClass());
 
     @Autowired
     private IDateParser dateParser;
@@ -56,6 +65,7 @@ public class CitationFactory implements ICitationFactory {
         processFunctions.add(this::processConceptTags);
         processFunctions.add(this::processOtherCreators);
         processFunctions.add(this::processReferences);
+        processFunctions.add(this::processGilesUploads);
     }
 
     /*
@@ -207,6 +217,26 @@ public class CitationFactory implements ICitationFactory {
         if (jObj.has("references") && !jObj.get("references").isJsonNull()) {
             JsonArray references = jObj.get("references").getAsJsonArray();
             references.forEach(ref -> createReference(citation, ref));
+        }
+    }
+    
+    private void processGilesUploads(JsonObject jObj, ICitation citation) {
+        citation.setGilesUploads(new HashSet<>());
+        if (jObj.has("gilesUploads") && !jObj.get("gilesUploads").isJsonNull()) {
+            
+            JsonArray uploads = jObj.get("gilesUploads").getAsJsonArray();
+            
+            ObjectMapper mapper = new ObjectMapper();
+            Gson gson = new GsonBuilder().create();
+            uploads.forEach(upload -> {
+                try {
+                GilesUpload u = mapper.readValue(gson.toJson(upload), GilesUpload.class);
+                citation.getGilesUploads().add(u);
+                } catch (IOException e) {
+                    logger.error("Couldn't unmarshall upload.", e);
+                }
+            });
+            
         }
     }
 

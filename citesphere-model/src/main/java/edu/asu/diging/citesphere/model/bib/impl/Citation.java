@@ -5,14 +5,14 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import javax.persistence.Lob;
-
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
 
 import edu.asu.diging.citesphere.model.bib.ICitation;
 import edu.asu.diging.citesphere.model.bib.ICitationConceptTag;
 import edu.asu.diging.citesphere.model.bib.ICreator;
+import edu.asu.diging.citesphere.model.bib.IGilesUpload;
 import edu.asu.diging.citesphere.model.bib.IPerson;
 import edu.asu.diging.citesphere.model.bib.IReference;
 import edu.asu.diging.citesphere.model.bib.ItemType;
@@ -22,6 +22,7 @@ public class Citation implements ICitation {
 
     @Id
     private ObjectId id;
+    @Indexed(unique=true)
     private String key;
     
     private String group;
@@ -67,8 +68,8 @@ public class Citation implements ICitation {
     private Set<ICitationConceptTag> conceptTags;
     
     private Set<IReference> references;
+    private Set<IGilesUpload> gilesUploads;
     
-    @Lob
     private String extra;
     
     /* (non-Javadoc)
@@ -482,6 +483,14 @@ public class Citation implements ICitation {
     @Override
     public void setReferences(Set<IReference> references) {
         this.references = references;
+    }
+    @Override
+    public Set<IGilesUpload> getGilesUploads() {
+        return gilesUploads;
+    }
+    @Override
+    public void setGilesUploads(Set<IGilesUpload> gilesUploads) {
+        this.gilesUploads = gilesUploads;
     }
     @Override
     public String getExtra() {
