@@ -1,5 +1,6 @@
 package edu.asu.diging.citesphere.data.bib;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.bson.types.ObjectId;
@@ -16,4 +17,5 @@ public interface CitationGroupRepository extends MongoRepository<CitationGroup, 
     
     void deleteByGroupId(int groupId);
 
+    List<ICitationGroup> findByGroupId(long groupId);
 }

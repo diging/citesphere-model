@@ -20,4 +20,5 @@ public interface CitationRepository extends MongoRepository<Citation, ObjectId> 
     
     void deleteByGroup(String group);
 
+    List<ICitation> findByGilesUploadsDocumentId(String id);
 }
