@@ -17,4 +17,7 @@ public interface CitationRepository extends MongoRepository<Citation, ObjectId> 
     List<ICitation> findByGroupAndAuthorsUri(ICitationGroup group, String uri);
     
     Optional<ICitation> findByKey(String key);
+    
+    void deleteByGroup(String group);
+
 }

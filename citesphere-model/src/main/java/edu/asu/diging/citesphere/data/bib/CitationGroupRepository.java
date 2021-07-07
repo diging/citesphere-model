@@ -13,4 +13,7 @@ import edu.asu.diging.citesphere.model.bib.impl.CitationGroup;
 public interface CitationGroupRepository extends MongoRepository<CitationGroup, ObjectId> {
 
     Optional<ICitationGroup> findFirstByGroupId(long groupId);
+    
+    void deleteByGroupId(int groupId);
+
 }

@@ -18,4 +18,7 @@ public interface CitationCollectionRepository extends MongoRepository<CitationCo
     public ICitationCollection findByKeyAndGroupId(String id, String groupId);
     
     public List<ICitationCollection> findByGroupId(String groupId);
+    
+    void deleteByGroupId(String groupId);
+
 }
