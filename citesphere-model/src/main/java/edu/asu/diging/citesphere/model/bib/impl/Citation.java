@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
+import org.springframework.social.zotero.api.Tag;
 
 import edu.asu.diging.citesphere.model.bib.ICitation;
 import edu.asu.diging.citesphere.model.bib.ICitationConceptTag;
@@ -59,6 +60,8 @@ public class Citation implements ICitation {
     private String rights;
     private List<String> collections;
     private int deleted;
+    private String parentItem;
+    private List<Tag> tags;
     
     private String metaDataItemKey;
     private long metaDataItemVersion;
@@ -431,6 +434,22 @@ public class Citation implements ICitation {
     @Override
     public void setDeleted(int deleted) {
         this.deleted = deleted;
+    }
+    @Override
+    public String getParentItem() {
+        return parentItem;
+    }
+    @Override
+    public void setParentItem(String parentItem) {
+        this.parentItem = parentItem;
+    }
+    @Override
+    public List<Tag> getTags() {
+        return tags;
+    }
+    @Override
+    public void setTags(List<Tag> tags) {
+        this.tags = tags;
     }
     @Override
     public String getDateAdded() {

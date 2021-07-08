@@ -3,6 +3,8 @@ package edu.asu.diging.citesphere.model.bib;
 import java.util.List;
 import java.util.Set;
 
+import org.springframework.social.zotero.api.Tag;
+
 public interface ICitation {
 
     String getKey();
@@ -172,6 +174,13 @@ public interface ICitation {
     void setGilesUploads(Set<IGilesUpload> gilesUploads);
 
     Set<IGilesUpload> getGilesUploads();
-    
+
+    String getParentItem();
+
+    void setParentItem(String parentItem);
+
+    List<Tag> getTags();
+
+    void setTags(List<Tag> tags);
 
 }
