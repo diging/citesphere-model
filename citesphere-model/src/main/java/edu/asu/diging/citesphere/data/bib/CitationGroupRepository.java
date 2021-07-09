@@ -15,5 +15,7 @@ public interface CitationGroupRepository extends MongoRepository<CitationGroup, 
 
     Optional<ICitationGroup> findFirstByGroupId(long groupId);
     
+    void deleteByGroupId(int groupId);
+
     List<ICitationGroup> findByGroupId(long groupId);
 }
