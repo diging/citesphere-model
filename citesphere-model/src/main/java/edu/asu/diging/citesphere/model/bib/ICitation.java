@@ -183,4 +183,5 @@ public interface ICitation {
 
     void setTags(List<Tag> tags);
 
+    boolean isMetaDataNote();
 }

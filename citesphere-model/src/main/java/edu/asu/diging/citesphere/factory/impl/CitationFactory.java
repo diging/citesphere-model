@@ -162,8 +162,13 @@ public class CitationFactory implements ICitationFactory {
         citation.setMetaDataItemKey(metaData.getKey());
         citation.setMetaDataItemVersion(metaData.getVersion());
         
-        String note = data.getNote();
-        note = note.replace("<p>", "").replace("</p>", "").trim();
+        String note = data.getNote().trim();
+        if (note.startsWith("<p>")) {
+            note = note.replaceFirst("<p>", "");
+        }
+        if (note.endsWith("</p>")) {
+            note = note.substring(0, note.length() - 4);
+        }
         JsonParser parser = new JsonParser();
         JsonObject jObj = parser.parse(note).getAsJsonObject();
 

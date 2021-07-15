@@ -10,6 +10,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.social.zotero.api.Tag;
 
+import edu.asu.diging.citesphere.factory.ExtraData;
 import edu.asu.diging.citesphere.model.bib.ICitation;
 import edu.asu.diging.citesphere.model.bib.ICitationConceptTag;
 import edu.asu.diging.citesphere.model.bib.ICreator;
@@ -533,6 +534,15 @@ public class Citation implements ICitation {
     @Override
     public void setMetaDataItemVersion(long metaDataItemVersion) {
         this.metaDataItemVersion = metaDataItemVersion;
+    }
+
+    @Override
+    public boolean isMetaDataNote() {
+        if (this.itemType.equals(ItemType.NOTE) && this.tags != null
+                && this.tags.stream().anyMatch(tag -> tag.getTag().equals(ExtraData.CITESPHERE_METADATA_TAG))) {
+            return true;
+        }
+        return false;
     }
     
 }
