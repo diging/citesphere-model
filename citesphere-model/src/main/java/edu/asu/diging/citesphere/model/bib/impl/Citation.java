@@ -29,6 +29,7 @@ public class Citation implements ICitation {
     
     private long version;
     private String title;
+    private String parentItem;
     private Set<IPerson> authors;
     private Set<IPerson> editors;
     
@@ -114,6 +115,18 @@ public class Citation implements ICitation {
     @Override
     public void setTitle(String title) {
         this.title = title;
+    }
+    /* (non-Javadoc)
+     * @see edu.asu.diging.citesphere.core.model.bib.ICitation#getParentItem()
+     */
+    public String getParentItem() {
+        return parentItem;
+    }
+    /* (non-Javadoc)
+     * @see edu.asu.diging.citesphere.core.model.bib.ICitation#setParentItem(java.lang.String)
+     */
+    public void setParentItem(String parentItem) {
+        this.parentItem = parentItem;
     }
     /* (non-Javadoc)
      * @see edu.asu.diging.citesphere.core.model.bib.impl.ICitation#getAuthors()
