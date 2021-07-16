@@ -538,7 +538,7 @@ public class Citation implements ICitation {
 
     @Override
     public boolean isMetaDataNote() {
-        if (this.itemType.equals(ItemType.NOTE) && this.tags != null
+        if (this.itemType != null && this.itemType.equals(ItemType.NOTE) && this.tags != null
                 && this.tags.stream().anyMatch(tag -> tag.getTag().equals(ExtraData.CITESPHERE_METADATA_TAG))) {
             return true;
         }
