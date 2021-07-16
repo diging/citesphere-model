@@ -152,8 +152,7 @@ public class CitationFactory implements ICitationFactory {
         return citation;
     }
     
-    @Override
-    public void parseMetaDataNote(ICitation citation, Item metaData) {
+    private void parseMetaDataNote(ICitation citation, Item metaData) {
         Data data = metaData.getData();
         if (data.getNote() == null || data.getNote().trim().isEmpty()) {
             return;
