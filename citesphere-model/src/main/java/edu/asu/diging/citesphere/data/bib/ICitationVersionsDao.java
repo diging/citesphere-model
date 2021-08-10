@@ -7,8 +7,10 @@ import edu.asu.diging.citesphere.model.bib.impl.CitationVersion;
 
 public interface ICitationVersionsDao {
     
-    List<CitationVersion> getVersions(String groupId, String key);
+    List<CitationVersion> getVersions(String groupId, String key, int page, int pageSize);
     
-    ICitation getVersion(String key, long version);
+    int getTotalCount(String groupId, String key);
+    
+    ICitation getVersion(String groupId, String key, long version);
 
 }

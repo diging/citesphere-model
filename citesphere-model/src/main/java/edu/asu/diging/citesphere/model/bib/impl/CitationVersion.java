@@ -1,10 +1,15 @@
 package edu.asu.diging.citesphere.model.bib.impl;
 
+import java.util.Set;
+
+import edu.asu.diging.citesphere.model.bib.IPerson;
+
 public class CitationVersion {
 
     private long version;
     private String key;
     private String updatedDate;
+    private String updatedBy;
 
     public long getVersion() {
         return version;
@@ -20,6 +25,14 @@ public class CitationVersion {
 
     public void setKey(String key) {
         this.key = key;
+    }
+
+    public String getUpdatedBy() {
+        return updatedBy;
+    }
+
+    public void setUpdatedBy(String updatedBy) {
+        this.updatedBy = updatedBy;
     }
 
     public String getUpdatedDate() {
