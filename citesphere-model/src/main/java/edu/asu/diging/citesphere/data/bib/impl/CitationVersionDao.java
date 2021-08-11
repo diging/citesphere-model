@@ -22,13 +22,15 @@ public class CitationVersionDao implements ICitationVersionsDao {
 
     @Autowired
     private Javers javers;
+    
+    private static final String GROUP_PROPERTY = "group";
 
     @Override
     public List<CitationVersion> getVersions(String groupId, String key, int page, int pageSize) {
         QueryBuilder jqlQuery = QueryBuilder.byInstanceId(key, Citation.class);
         List<CdoSnapshot> versions = javers.findSnapshots(jqlQuery.build()).stream()
                 .filter(snapshot -> snapshot.getType() != SnapshotType.TERMINAL
-                        && groupId.equals((String) snapshot.getPropertyValue("group")))
+                        && groupId.equals((String) snapshot.getPropertyValue(GROUP_PROPERTY)))
                 .collect(Collectors.toList());
         int offset = page * pageSize;
         if (offset >= versions.size()) {
@@ -44,7 +46,7 @@ public class CitationVersionDao implements ICitationVersionsDao {
         QueryBuilder jqlQuery = QueryBuilder.byInstanceId(key, Citation.class);
         return javers.findSnapshots(jqlQuery.build()).stream()
                 .filter(snapshot -> snapshot.getType() != SnapshotType.TERMINAL
-                        && groupId.equals((String) snapshot.getPropertyValue("group")))
+                        && groupId.equals((String) snapshot.getPropertyValue(GROUP_PROPERTY)))
                 .collect(Collectors.toList()).size();
 
     }
