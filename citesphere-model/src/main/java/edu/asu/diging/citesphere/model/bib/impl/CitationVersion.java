@@ -1,9 +1,5 @@
 package edu.asu.diging.citesphere.model.bib.impl;
 
-import java.util.Set;
-
-import edu.asu.diging.citesphere.model.bib.IPerson;
-
 public class CitationVersion {
 
     private long version;

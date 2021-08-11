@@ -2,7 +2,6 @@ package edu.asu.diging.citesphere.data.bib.impl;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.javers.core.Javers;
@@ -15,7 +14,6 @@ import org.springframework.stereotype.Repository;
 
 import edu.asu.diging.citesphere.data.bib.ICitationVersionsDao;
 import edu.asu.diging.citesphere.model.bib.ICitation;
-import edu.asu.diging.citesphere.model.bib.IPerson;
 import edu.asu.diging.citesphere.model.bib.impl.Citation;
 import edu.asu.diging.citesphere.model.bib.impl.CitationVersion;
 
