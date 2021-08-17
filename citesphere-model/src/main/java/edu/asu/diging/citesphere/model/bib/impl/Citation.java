@@ -6,6 +6,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.bson.types.ObjectId;
+import org.javers.core.metamodel.annotation.DiffIgnore;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 
@@ -21,7 +22,9 @@ import edu.asu.diging.citesphere.model.bib.ItemType;
 public class Citation implements ICitation {
 
     @Id
+    @DiffIgnore
     private ObjectId id;
+    
     @Indexed(unique=true)
     private String key;
     
