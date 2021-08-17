@@ -36,7 +36,7 @@
         <spring.version>5.2.7.RELEASE</spring.version>
         <spring-data.version>Neumann-SR4</spring-data.version>
         <com.fasterxml.jackson.version>2.9.10.1</com.fasterxml.jackson.version>
-        <spring-security-version>5.1.5.RELEASE</spring-security-version>
+        <spring-security-version>5.1.11.RELEASE</spring-security-version>
         <javers.version>5.0.0</javers.version>
         <spring-social-zotero.version>0.7</spring-social-zotero.version>
     </properties>
