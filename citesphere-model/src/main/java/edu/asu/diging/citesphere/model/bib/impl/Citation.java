@@ -6,6 +6,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.bson.types.ObjectId;
+import org.javers.core.metamodel.annotation.DiffIgnore;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.social.zotero.api.Tag;
@@ -23,7 +24,9 @@ import edu.asu.diging.citesphere.model.bib.ItemType;
 public class Citation implements ICitation {
 
     @Id
+    @DiffIgnore
     private ObjectId id;
+    
     @Indexed(unique=true)
     private String key;
     
@@ -31,6 +34,7 @@ public class Citation implements ICitation {
     
     private long version;
     private String title;
+    private String parentItem;
     private Set<IPerson> authors;
     private Set<IPerson> editors;
     
@@ -121,6 +125,18 @@ public class Citation implements ICitation {
     @Override
     public void setTitle(String title) {
         this.title = title;
+    }
+    /* (non-Javadoc)
+     * @see edu.asu.diging.citesphere.core.model.bib.ICitation#getParentItem()
+     */
+    public String getParentItem() {
+        return parentItem;
+    }
+    /* (non-Javadoc)
+     * @see edu.asu.diging.citesphere.core.model.bib.ICitation#setParentItem(java.lang.String)
+     */
+    public void setParentItem(String parentItem) {
+        this.parentItem = parentItem;
     }
     /* (non-Javadoc)
      * @see edu.asu.diging.citesphere.core.model.bib.impl.ICitation#getAuthors()

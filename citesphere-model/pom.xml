@@ -2,7 +2,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>edu.asu.diging</groupId>
     <artifactId>citesphere-model</artifactId>
-    <version>1.12-SNAPSHOT</version>
+    <version>1.13</version>
 
     <name>${project.groupId}:${project.artifactId}</name>
     <description>
@@ -33,10 +33,10 @@
     </scm>
 
     <properties>
-        <spring.version>5.2.7.RELEASE</spring.version>
+        <spring.version>5.2.9.RELEASE</spring.version>
         <spring-data.version>Neumann-SR4</spring-data.version>
-        <com.fasterxml.jackson.version>2.9.10.1</com.fasterxml.jackson.version>
-        <spring-security-version>5.1.5.RELEASE</spring-security-version>
+        <com.fasterxml.jackson.version>2.9.10.7</com.fasterxml.jackson.version>
+        <spring-security-version>5.1.11.RELEASE</spring-security-version>
         <javers.version>5.0.0</javers.version>
         <spring-social-zotero.version>0.7</spring-social-zotero.version>
     </properties>
@@ -222,6 +222,12 @@
                         <goals>
                             <goal>sign</goal>
                         </goals>
+                        <configuration>
+                            <gpgArguments>
+                                <arg>--pinentry-mode</arg>
+                                <arg>loopback</arg>
+                            </gpgArguments>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>
