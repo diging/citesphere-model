@@ -30,7 +30,7 @@ public class CitationMongoDao implements ICitationDao {
         } else {
             query.addCriteria(Criteria.where("deleted").is(1));
         }
-        if (!conceptIds.isEmpty()) {
+        if (conceptIds != null && !conceptIds.isEmpty()) {
             query.addCriteria(Criteria.where("conceptTags.localConceptId").in(conceptIds));
         }
         query.skip(start);
