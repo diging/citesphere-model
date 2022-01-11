@@ -8,9 +8,9 @@ import edu.asu.diging.citesphere.model.bib.ICitation;
 
 public interface ICitationDao {
 
-    List<? extends ICitation> findCitations(String groupId, long start, int pageSize, boolean isDeleted);
+    List<? extends ICitation> findCitations(String groupId, long start, int pageSize, boolean isDeleted, List<String> conceptIds);
 
-    List<? extends ICitation> findCitationsInCollection(String groupId, String collectionId, long start, int pageSize);
+    List<? extends ICitation> findCitationsInCollection(String groupId, String collectionId, long start, int pageSize, List<String> conceptIds);
 
     /**
      * This method returns an iterator over all citations in a group and if provided
