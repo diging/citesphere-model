@@ -108,6 +108,10 @@ public interface ICitation {
     void setSeriesText(String seriesText);
 
     String getSeriesText();
+    
+    void setNote(String note);
+    
+    String getNote();
 
     void setAbstractNote(String abstractNote);
 
