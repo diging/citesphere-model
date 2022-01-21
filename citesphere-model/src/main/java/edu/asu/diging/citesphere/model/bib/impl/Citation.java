@@ -50,6 +50,7 @@ public class Citation implements ICitation {
     private String series;
     private String seriesTitle;
     private String url;
+    private String note;
     private String abstractNote;
     private String accessDate;
     private String seriesText;
@@ -330,6 +331,14 @@ public class Citation implements ICitation {
     @Override
     public void setUrl(String url) {
         this.url = url;
+    }
+    @Override
+    public String getNote() {
+        return note;
+    }
+    @Override
+    public void setNote(String note) {
+        this.note = note;
     }
     @Override
     public String getAbstractNote() {

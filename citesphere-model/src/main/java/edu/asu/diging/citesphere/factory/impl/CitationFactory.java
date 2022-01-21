@@ -94,6 +94,7 @@ public class CitationFactory implements ICitationFactory {
         citation.setDeleted(data.getDeleted());
         citation.setParentItem(data.getParentItem());
         citation.setTags(data.getTags());
+        citation.setNote(data.getNote());
 
         Set<IPerson> authors = new TreeSet<>();
         Set<IPerson> editors = new TreeSet<>();
