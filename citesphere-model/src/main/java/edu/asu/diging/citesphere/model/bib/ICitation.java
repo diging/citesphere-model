@@ -183,10 +183,6 @@ public interface ICitation {
 
     Set<IGilesUpload> getGilesUploads();
 
-    String getParentItem();
-
-    void setParentItem(String parentItem);
-
     List<Tag> getTags();
 
     void setTags(List<Tag> tags);

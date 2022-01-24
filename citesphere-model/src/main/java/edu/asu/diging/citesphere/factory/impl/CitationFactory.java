@@ -285,62 +285,27 @@ public class CitationFactory implements ICitationFactory {
             reference.setContributors(refCreators);
             contributors.forEach(c -> mapCreatorFields(contributors, refCreators));
         }
-        reference.setTitle((ref.getAsJsonObject().get("title") != null
-                && !ref.getAsJsonObject().get("title").isJsonNull())
-                        ? ref.getAsJsonObject().get("title").getAsString()
-                        : "");
-        reference.setEndPage((ref.getAsJsonObject().get("endPage") != null
-                && !ref.getAsJsonObject().get("endPage").isJsonNull())
-                        ? ref.getAsJsonObject().get("endPage").getAsString()
-                        : "");
-        reference.setFirstPage((ref.getAsJsonObject().get("firstPage") != null
-                && !ref.getAsJsonObject().get("firstPage").isJsonNull())
-                        ? ref.getAsJsonObject().get("firstPage").getAsString()
-                        : "");
-        reference.setIdentifier((ref.getAsJsonObject().get("identifier") != null
-                && !ref.getAsJsonObject().get("identifier").isJsonNull())
-                        ? ref.getAsJsonObject().get("identifier").getAsString()
-                        : "");
-        reference.setIdentifierType((ref.getAsJsonObject().get("identifierType") != null
-                && !ref.getAsJsonObject().get("identifierType").isJsonNull())
-                        ? ref.getAsJsonObject().get("identifierType").getAsString()
-                        : "");
-        reference.setReferenceString((ref.getAsJsonObject().get("referenceString") != null
-                && !ref.getAsJsonObject().get("referenceString").isJsonNull())
-                        ? ref.getAsJsonObject().get("referenceString").getAsString()
-                        : "");
-        reference.setReferenceStringRaw((ref.getAsJsonObject().get("referenceStringRaw") != null
-                && !ref.getAsJsonObject().get("referenceStringRaw").isJsonNull())
-                        ? ref.getAsJsonObject().get("referenceStringRaw").getAsString()
-                        : "");
-        reference.setSource((ref.getAsJsonObject().get("source") != null
-                && !ref.getAsJsonObject().get("source").isJsonNull())
-                        ? ref.getAsJsonObject().get("source").getAsString()
-                        : "");
-        reference.setVolume((ref.getAsJsonObject().get("volume") != null
-                && !ref.getAsJsonObject().get("volume").isJsonNull())
-                        ? ref.getAsJsonObject().get("volume").getAsString()
-                        : "");
-        reference.setYear((ref.getAsJsonObject().get("year") != null
-                && !ref.getAsJsonObject().get("year").isJsonNull())
-                        ? ref.getAsJsonObject().get("year").getAsString()
-                        : "");
-        reference.setPublicationType((ref.getAsJsonObject().get("publicationType") != null
-                && !ref.getAsJsonObject().get("publicationType").isJsonNull())
-                        ? ref.getAsJsonObject().get("publicationType").getAsString()
-                        : "");
-        reference.setCitationId((ref.getAsJsonObject().get("citationId") != null
-                && !ref.getAsJsonObject().get("citationId").isJsonNull())
-                        ? ref.getAsJsonObject().get("citationId").getAsString()
-                        : "");
-        reference.setReferenceId((ref.getAsJsonObject().get("referenceId") != null
-                && !ref.getAsJsonObject().get("referenceId").isJsonNull())
-                        ? ref.getAsJsonObject().get("referenceId").getAsString()
-                        : "");
-        reference.setReferenceLabel((ref.getAsJsonObject().get("referenceLabel") != null
-                && !ref.getAsJsonObject().get("referenceLabel").isJsonNull())
-                        ? ref.getAsJsonObject().get("referenceLabel").getAsString()
-                        : "");
+        reference.setTitle(getProperty(ref, "title"));
+        reference.setEndPage(getProperty(ref, "endPage"));
+        reference.setFirstPage(getProperty(ref, "firstPage"));
+        reference.setIdentifier(getProperty(ref, "identifier"));
+        reference.setIdentifierType(getProperty(ref, "identifierType"));
+        reference.setReferenceString(getProperty(ref, "referenceString"));
+        reference.setReferenceStringRaw(getProperty(ref, "referenceStringRaw"));
+        reference.setSource(getProperty(ref, "source"));
+        reference.setVolume(getProperty(ref, "volume"));
+        reference.setYear(getProperty(ref, "year"));
+        reference.setPublicationType(getProperty(ref, "publicationType"));
+        reference.setCitationId(getProperty(ref, "citationId"));
+        reference.setReferenceId(getProperty(ref, "referenceId"));
+        reference.setReferenceLabel(getProperty(ref, "referenceLabel"));
+    }
+    
+    private String getProperty(JsonElement ref, String propertyName) {
+        return (ref.getAsJsonObject().get(propertyName) != null
+                && !ref.getAsJsonObject().get(propertyName).isJsonNull())
+                        ? ref.getAsJsonObject().get(propertyName).getAsString()
+                        : "";
     }
 
     private void mapCreatorFields(JsonArray creatorList, Set<ICreator> citationCreatorList) {
@@ -387,24 +352,11 @@ public class CitationFactory implements ICitationFactory {
     }
 
     private void mapPerson(JsonElement a, IPerson person) {
-        person.setName(a.getAsJsonObject().get("name") != null && !a.getAsJsonObject().get("name").isJsonNull()
-                ? a.getAsJsonObject().get("name").getAsString()
-                : "");
-        person.setFirstName(
-                a.getAsJsonObject().get("firstName") != null && !a.getAsJsonObject().get("firstName").isJsonNull()
-                        ? a.getAsJsonObject().get("firstName").getAsString()
-                        : "");
-        person.setLastName(
-                a.getAsJsonObject().get("lastName") != null && !a.getAsJsonObject().get("lastName").isJsonNull()
-                        ? a.getAsJsonObject().get("lastName").getAsString()
-                        : "");
-        person.setUri(a.getAsJsonObject().get("uri") != null && !a.getAsJsonObject().get("uri").isJsonNull()
-                ? a.getAsJsonObject().get("uri").getAsString()
-                : "");
-        person.setLocalAuthorityId(a.getAsJsonObject().get("localAuthorityId") != null
-                && !a.getAsJsonObject().get("localAuthorityId").isJsonNull()
-                        ? a.getAsJsonObject().get("localAuthorityId").getAsString()
-                        : "");
+        person.setName(getProperty(a, "name"));
+        person.setFirstName(getProperty(a, "firstName"));
+        person.setLastName(getProperty(a, "lastName"));
+        person.setUri(getProperty(a, "uri"));
+        person.setLocalAuthorityId(getProperty(a, "localAuthorityId"));
         person.setAffiliations(new HashSet<>());
         JsonElement affiliations = a.getAsJsonObject().get("affiliations");
         if (affiliations instanceof JsonArray) {
