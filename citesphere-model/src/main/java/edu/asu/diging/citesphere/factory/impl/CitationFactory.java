@@ -164,6 +164,7 @@ public class CitationFactory implements ICitationFactory {
         citation.setMetaDataItemVersion(metaData.getVersion());
         
         String note = data.getNote().trim();
+        // Zotero adds <p> tags for notes by default and hence the json element could be enclosed within this tags
         if (note.startsWith("<p>")) {
             note = note.replaceFirst("<p>", "");
         }
