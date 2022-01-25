@@ -9,7 +9,9 @@ import org.bson.types.ObjectId;
 import org.javers.core.metamodel.annotation.DiffIgnore;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
+import org.springframework.social.zotero.api.Tag;
 
+import edu.asu.diging.citesphere.factory.ExtraData;
 import edu.asu.diging.citesphere.model.bib.ICitation;
 import edu.asu.diging.citesphere.model.bib.ICitationConceptTag;
 import edu.asu.diging.citesphere.model.bib.ICreator;
@@ -64,6 +66,10 @@ public class Citation implements ICitation {
     private String rights;
     private List<String> collections;
     private int deleted;
+    private List<Tag> tags;
+    
+    private String metaDataItemKey;
+    private long metaDataItemVersion;
     
     private String dateAdded;
     private String dateModified;
@@ -455,6 +461,14 @@ public class Citation implements ICitation {
         this.deleted = deleted;
     }
     @Override
+    public List<Tag> getTags() {
+        return tags;
+    }
+    @Override
+    public void setTags(List<Tag> tags) {
+        this.tags = tags;
+    }
+    @Override
     public String getDateAdded() {
         return dateAdded;
     }
@@ -520,6 +534,31 @@ public class Citation implements ICitation {
             otherCreators.forEach(c -> roles.add(c.getRole()));
         }
         return roles;
+    }
+    @Override
+    public String getMetaDataItemKey() {
+        return metaDataItemKey;
+    }
+    @Override
+    public void setMetaDataItemKey(String metaDataItemKey) {
+        this.metaDataItemKey = metaDataItemKey;
+    }
+    @Override
+    public long getMetaDataItemVersion() {
+        return metaDataItemVersion;
+    }
+    @Override
+    public void setMetaDataItemVersion(long metaDataItemVersion) {
+        this.metaDataItemVersion = metaDataItemVersion;
+    }
+
+    @Override
+    public boolean isMetaDataNote() {
+        if (this.itemType != null && this.itemType.equals(ItemType.NOTE) && this.tags != null
+                && this.tags.stream().anyMatch(tag -> tag.getTag().equals(ExtraData.CITESPHERE_METADATA_TAG))) {
+            return true;
+        }
+        return false;
     }
     
 }
