@@ -3,6 +3,8 @@ package edu.asu.diging.citesphere.model.bib;
 import java.util.List;
 import java.util.Set;
 
+import org.springframework.social.zotero.api.Tag;
+
 public interface ICitation {
 
     String getKey();
@@ -140,6 +142,14 @@ public interface ICitation {
     void setGroup(String group);
 
     String getGroup();
+    
+    String getMetaDataItemKey();
+    
+    void setMetaDataItemKey(String metaDataItemKey);
+    
+    long getMetaDataItemVersion();
+    
+    void setMetaDataItemVersion(long metaDataItemVersion);
 
     void setOtherCreators(Set<ICreator> otherCreators);
 
@@ -172,6 +182,10 @@ public interface ICitation {
     void setGilesUploads(Set<IGilesUpload> gilesUploads);
 
     Set<IGilesUpload> getGilesUploads();
-    
 
+    List<Tag> getTags();
+
+    void setTags(List<Tag> tags);
+
+    boolean isMetaDataNote();
 }

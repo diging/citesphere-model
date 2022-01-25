@@ -6,6 +6,6 @@ import edu.asu.diging.citesphere.model.bib.ICitation;
 
 public interface ICitationFactory {
 
-    ICitation createCitation(Item item);
+    ICitation createCitation(Item item, Item metaData);
 
 }
