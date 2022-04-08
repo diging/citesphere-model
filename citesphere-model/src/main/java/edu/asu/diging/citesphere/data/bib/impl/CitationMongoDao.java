@@ -3,11 +3,20 @@ package edu.asu.diging.citesphere.data.bib.impl;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.aggregation.Aggregation;
+import org.springframework.data.mongodb.core.aggregation.GroupOperation;
+import org.springframework.data.mongodb.core.aggregation.MatchOperation;
+import org.springframework.data.mongodb.core.aggregation.ProjectionOperation;
+import org.springframework.data.mongodb.core.aggregation.SortOperation;
+import org.springframework.data.mongodb.core.aggregation.UnwindOperation;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.util.CloseableIterator;
 import org.springframework.stereotype.Repository;
+
+import com.mongodb.BasicDBObject;
 
 import edu.asu.diging.citesphere.data.bib.ICitationDao;
 import edu.asu.diging.citesphere.model.bib.ICitation;
@@ -72,4 +81,25 @@ public class CitationMongoDao implements ICitationDao {
         return mongoTemplate.find(query, Citation.class);
     }
     
+    public List<? extends ICitation> findCitatationByName(String name, String groupId){
+    	MatchOperation match = Aggregation.match(Criteria.where("group").is(groupId));
+
+        ProjectionOperation project = Aggregation.project().and("authors")
+                .unionArrays("editors", "otherCreators.person").as("persons").andInclude("group");
+
+        UnwindOperation unwind = Aggregation.unwind("persons");
+
+        SortOperation sort = Aggregation.sort(Direction.ASC, "persons.name");
+
+        GroupOperation group = Aggregation.group("group")
+                .push(new BasicDBObject("name", "$persons.name").append("uri", "$persons.uri")
+                        .append("firstName", "$persons.firstName").append("lastName", "$persons.lastName")
+                        .append("localAuthorityId", "$persons.localAuthorityId"))
+                .as("persons");
+
+//        AggregationResults<Persons> result = mongoTemplate.aggregate(
+//                Aggregation.newAggregation(match, project, unwind, sort, group), Citation.class, Persons.class);
+
+        return null;   	
+    }
 }
