@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.aggregation.Aggregation;
+import org.springframework.data.mongodb.core.aggregation.AggregationResults;
 import org.springframework.data.mongodb.core.aggregation.GroupOperation;
 import org.springframework.data.mongodb.core.aggregation.MatchOperation;
 import org.springframework.data.mongodb.core.aggregation.ProjectionOperation;
@@ -22,6 +23,7 @@ import edu.asu.diging.citesphere.data.bib.ICitationDao;
 import edu.asu.diging.citesphere.model.bib.ICitation;
 import edu.asu.diging.citesphere.model.bib.ItemType;
 import edu.asu.diging.citesphere.model.bib.impl.Citation;
+import edu.asu.diging.citesphere.model.transfer.impl.Persons;
 
 @Repository
 public class CitationMongoDao implements ICitationDao {
@@ -81,25 +83,10 @@ public class CitationMongoDao implements ICitationDao {
         return mongoTemplate.find(query, Citation.class);
     }
     
-    public List<? extends ICitation> findCitatationByName(String name, String groupId){
-    	MatchOperation match = Aggregation.match(Criteria.where("group").is(groupId));
-
-        ProjectionOperation project = Aggregation.project().and("authors")
-                .unionArrays("editors", "otherCreators.person").as("persons").andInclude("group");
-
-        UnwindOperation unwind = Aggregation.unwind("persons");
-
-        SortOperation sort = Aggregation.sort(Direction.ASC, "persons.name");
-
-        GroupOperation group = Aggregation.group("group")
-                .push(new BasicDBObject("name", "$persons.name").append("uri", "$persons.uri")
-                        .append("firstName", "$persons.firstName").append("lastName", "$persons.lastName")
-                        .append("localAuthorityId", "$persons.localAuthorityId"))
-                .as("persons");
-
-//        AggregationResults<Persons> result = mongoTemplate.aggregate(
-//                Aggregation.newAggregation(match, project, unwind, sort, group), Citation.class, Persons.class);
-
-        return null;   	
+    public List<ICitation> findCitatationByName(String name){
+    	name=" "+name;
+        MatchOperation match = Aggregation.match(Criteria.where("authors.name").is(name).orOperator(Criteria.where("editors.name").is(name)).orOperator(Criteria.where("otherCreators.person.name").is(name)));
+        AggregationResults<ICitation> result = mongoTemplate.aggregate(Aggregation.newAggregation(match),Citation.class, ICitation.class);
+        return  (List<ICitation>) result.getUniqueMappedResult();   	
     }
 }
