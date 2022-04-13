@@ -83,10 +83,21 @@ public class CitationMongoDao implements ICitationDao {
         return mongoTemplate.find(query, Citation.class);
     }
     
-    public List<ICitation> findCitatationByName(String name){
+    public List<Citation> findCitatationByName(String name){
     	name=" "+name;
+    	ProjectionOperation project = Aggregation.project().and("authors")
+                .unionArrays("editors", "otherCreators.person").as("persons").andInclude("group");
+    	UnwindOperation unwind = Aggregation.unwind("persons");
+
+        SortOperation sort = Aggregation.sort(Direction.ASC, "persons.name");
+
+        GroupOperation group = Aggregation.group("group")
+                .push(new BasicDBObject("name", "$persons.name").append("uri", "$persons.uri")
+                        .append("firstName", "$persons.firstName").append("lastName", "$persons.lastName")
+                        .append("localAuthorityId", "$persons.localAuthorityId"))
+                .as("persons");
         MatchOperation match = Aggregation.match(Criteria.where("authors.name").is(name).orOperator(Criteria.where("editors.name").is(name)).orOperator(Criteria.where("otherCreators.person.name").is(name)));
-        AggregationResults<ICitation> result = mongoTemplate.aggregate(Aggregation.newAggregation(match),Citation.class, ICitation.class);
-        return  (List<ICitation>) result.getUniqueMappedResult();   	
+        AggregationResults<Citation> result = mongoTemplate.aggregate(Aggregation.newAggregation(match,project,unwind,sort,group),Citation.class, Citation.class);
+        return  (List<Citation>) result.getUniqueMappedResult();   	
     }
 }
