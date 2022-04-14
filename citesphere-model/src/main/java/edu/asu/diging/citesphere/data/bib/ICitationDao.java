@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.data.util.CloseableIterator;
 
 import edu.asu.diging.citesphere.model.bib.ICitation;
+import edu.asu.diging.citesphere.model.transfer.impl.Citations;
 
 public interface ICitationDao {
 
@@ -12,6 +13,7 @@ public interface ICitationDao {
 
     List<? extends ICitation> findCitationsInCollection(String groupId, String collectionId, long start, int pageSize, List<String> conceptIds);
 
+    Citations findCitatationByName(String name); 
     /**
      * This method returns an iterator over all citations in a group and if provided
      * in a collection. This iterator should return the most memory efficient way
