@@ -3,16 +3,30 @@ package edu.asu.diging.citesphere.data.bib.impl;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.aggregation.Aggregation;
+import org.springframework.data.mongodb.core.aggregation.AggregationResults;
+import org.springframework.data.mongodb.core.aggregation.ConditionalOperators;
+import org.springframework.data.mongodb.core.aggregation.GroupOperation;
+import org.springframework.data.mongodb.core.aggregation.MatchOperation;
+import org.springframework.data.mongodb.core.aggregation.ProjectionOperation;
+import org.springframework.data.mongodb.core.aggregation.SortOperation;
+import org.springframework.data.mongodb.core.aggregation.UnwindOperation;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.util.CloseableIterator;
 import org.springframework.stereotype.Repository;
 
+import com.mongodb.BasicDBObject;
 import edu.asu.diging.citesphere.data.bib.ICitationDao;
 import edu.asu.diging.citesphere.model.bib.ICitation;
 import edu.asu.diging.citesphere.model.bib.ItemType;
 import edu.asu.diging.citesphere.model.bib.impl.Citation;
+import edu.asu.diging.citesphere.model.bib.impl.Person;
+import edu.asu.diging.citesphere.model.transfer.impl.Citations;
+import edu.asu.diging.citesphere.model.transfer.impl.Persons;
+
 
 @Repository
 public class CitationMongoDao implements ICitationDao {
@@ -70,6 +84,60 @@ public class CitationMongoDao implements ICitationDao {
         query.skip(start);
         query.limit(pageSize);
         return mongoTemplate.find(query, Citation.class);
+    }
+    
+    @Override
+    public Persons findAllPeople(String groupId) {
+        MatchOperation match = Aggregation.match(Criteria.where("group").is(groupId));
+
+        ProjectionOperation project = Aggregation.project().and("group").as("_id").and("authors")
+                .unionArrays("editors", "otherCreators.person").as("persons");
+
+        UnwindOperation unwind = Aggregation.unwind("persons");
+
+        ProjectionOperation project1 = Aggregation
+                .project().and("_id").as("_id").and("persons").as("persons").and(ConditionalOperators
+                        .when(Criteria.where("$persons.uri").is(null)).then("").otherwiseValueOf("persons.uri"))
+                .as("uri");
+
+        GroupOperation group = Aggregation.group("_id").addToSet(new BasicDBObject() {
+            {
+                put("name", "$persons.name");
+                put("firstName", "$persons.firstName");
+                put("lastName", "$persons.lastName");
+                put("uri", "$uri");
+            }
+        }).as("persons");
+
+        UnwindOperation unwind1 = Aggregation.unwind("persons");
+
+        SortOperation sort = Aggregation.sort(Direction.ASC, "persons.name");
+
+        GroupOperation groupAfterSort = Aggregation.group("_id").push("persons").as("persons");
+
+        AggregationResults<Persons> result = mongoTemplate.aggregate(
+                Aggregation.newAggregation(match, project, unwind, project1, group, unwind1, sort, groupAfterSort),
+                Citation.class, Persons.class);
+
+        return result.getUniqueMappedResult();
+    }
+
+    @Override
+    public Citations findCitationsForPerson(Person person) {
+
+        ProjectionOperation project = Aggregation.project().and("authors")
+                .unionArrays("editors", "otherCreators.person").as("persons").and(Aggregation.ROOT).as("citation");
+
+        UnwindOperation unwind = Aggregation.unwind("persons");
+
+        MatchOperation match = Aggregation.match(Criteria.where("persons.name").is(person.getName()));
+
+        GroupOperation group = Aggregation.group("persons.name").addToSet("citation").as("citations");
+
+        AggregationResults<Citations> result = mongoTemplate
+                .aggregate(Aggregation.newAggregation(project, unwind, match, group), Citation.class, Citations.class);
+
+        return result.getUniqueMappedResult();
     }
     
 }

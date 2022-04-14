@@ -5,6 +5,9 @@ import java.util.List;
 import org.springframework.data.util.CloseableIterator;
 
 import edu.asu.diging.citesphere.model.bib.ICitation;
+import edu.asu.diging.citesphere.model.bib.impl.Person;
+import edu.asu.diging.citesphere.model.transfer.impl.Citations;
+import edu.asu.diging.citesphere.model.transfer.impl.Persons;
 
 public interface ICitationDao {
 
@@ -24,4 +27,7 @@ public interface ICitationDao {
      */
     CloseableIterator<? extends ICitation> getCitationIterator(String groupId, String collectionId);
 
+    Persons findAllPeople(String groupId);
+
+    Citations findCitationsForPerson(Person person);
 }
