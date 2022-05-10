@@ -9,8 +9,10 @@ import org.springframework.data.mongodb.core.aggregation.Aggregation;
 import org.springframework.data.mongodb.core.aggregation.AggregationResults;
 import org.springframework.data.mongodb.core.aggregation.ConditionalOperators;
 import org.springframework.data.mongodb.core.aggregation.GroupOperation;
+import org.springframework.data.mongodb.core.aggregation.LimitOperation;
 import org.springframework.data.mongodb.core.aggregation.MatchOperation;
 import org.springframework.data.mongodb.core.aggregation.ProjectionOperation;
+import org.springframework.data.mongodb.core.aggregation.SkipOperation;
 import org.springframework.data.mongodb.core.aggregation.SortOperation;
 import org.springframework.data.mongodb.core.aggregation.UnwindOperation;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -87,55 +89,72 @@ public class CitationMongoDao implements ICitationDao {
     }
     
     @Override
-    public Persons findAllPeople(String groupId) {
+    public Persons findAllPeople(String groupId, long start, int pageSize) {
         MatchOperation match = Aggregation.match(Criteria.where("group").is(groupId));
 
         ProjectionOperation project = Aggregation.project().and("group").as("_id").and("authors")
-                .unionArrays("editors", "otherCreators.person").as("persons");
+                .unionArrays("editors", "otherCreators.person").as("persons").and("key").as("citationKey");
 
         UnwindOperation unwind = Aggregation.unwind("persons");
-
-        ProjectionOperation project1 = Aggregation
-                .project().and("_id").as("_id").and("persons").as("persons").and(ConditionalOperators
-                        .when(Criteria.where("$persons.uri").is(null)).then("").otherwiseValueOf("persons.uri"))
-                .as("uri");
 
         GroupOperation group = Aggregation.group("_id").addToSet(new BasicDBObject() {
             {
                 put("name", "$persons.name");
                 put("firstName", "$persons.firstName");
                 put("lastName", "$persons.lastName");
-                put("uri", "$uri");
+                put("uri", "$persons.uri");
+                put("citationKey", "$citationKey");
             }
         }).as("persons");
 
+        ProjectionOperation projectResultCount = Aggregation.project().and("_id").as("_id").and("persons")
+                .as("persons").and("persons").size().as("totalResults");
+        
         UnwindOperation unwind1 = Aggregation.unwind("persons");
 
         SortOperation sort = Aggregation.sort(Direction.ASC, "persons.name");
+        
+        SkipOperation skip = Aggregation.skip(start);
+        
+        LimitOperation limit = Aggregation.limit(pageSize);
 
-        GroupOperation groupAfterSort = Aggregation.group("_id").push("persons").as("persons");
+        GroupOperation groupAfterSort = Aggregation.group("_id").push("persons").as("persons")
+                .first("totalResults").as("totalResults");
 
         AggregationResults<Persons> result = mongoTemplate.aggregate(
-                Aggregation.newAggregation(match, project, unwind, project1, group, unwind1, sort, groupAfterSort),
+                Aggregation.newAggregation(match, project, unwind, group, projectResultCount, unwind1, sort, skip, limit, groupAfterSort),
                 Citation.class, Persons.class);
 
         return result.getUniqueMappedResult();
     }
 
     @Override
-    public Citations findCitationsForPerson(Person person) {
+    public Citations findCitationsByPersonUri(String uri) {
 
         ProjectionOperation project = Aggregation.project().and("authors")
                 .unionArrays("editors", "otherCreators.person").as("persons").and(Aggregation.ROOT).as("citation");
 
         UnwindOperation unwind = Aggregation.unwind("persons");
 
-        MatchOperation match = Aggregation.match(Criteria.where("persons.name").is(person.getName()));
+        MatchOperation match = Aggregation.match(Criteria.where("persons.uri").is(uri));
 
-        GroupOperation group = Aggregation.group("persons.name").addToSet("citation").as("citations");
+        GroupOperation group = Aggregation.group("persons.uri").addToSet("citation").as("citations");
 
         AggregationResults<Citations> result = mongoTemplate
                 .aggregate(Aggregation.newAggregation(project, unwind, match, group), Citation.class, Citations.class);
+
+        return result.getUniqueMappedResult();
+    }
+    
+    @Override
+    public Citations findCitationsByPersonCitationKey(String citationKey) {
+
+        MatchOperation match = Aggregation.match(Criteria.where("key").is(citationKey));
+
+        GroupOperation group = Aggregation.group("id").addToSet(Aggregation.ROOT).as("citations");
+
+        AggregationResults<Citations> result = mongoTemplate
+                .aggregate(Aggregation.newAggregation(match, group), Citation.class, Citations.class);
 
         return result.getUniqueMappedResult();
     }

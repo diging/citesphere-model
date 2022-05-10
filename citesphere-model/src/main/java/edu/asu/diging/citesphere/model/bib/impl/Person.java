@@ -13,6 +13,7 @@ public class Person implements IPerson, Comparable<Person> {
     private String firstName;
     private String lastName;
     private int positionInList;
+    private String citationKey;
     
     private Set<IAffiliation> affiliations;
    
@@ -96,6 +97,15 @@ public class Person implements IPerson, Comparable<Person> {
     public void setAffiliations(Set<IAffiliation> affiliations) {
         this.affiliations = affiliations;
     }
+    @Override
+    public String getCitationKey() {
+        return citationKey;
+    }
+    @Override
+    public void setCitationKey(String citationKey) {
+        this.citationKey = citationKey;
+    }
+
     
     @Override
     public int compareTo(Person o) {

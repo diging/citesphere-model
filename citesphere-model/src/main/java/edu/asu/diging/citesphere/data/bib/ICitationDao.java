@@ -27,7 +27,9 @@ public interface ICitationDao {
      */
     CloseableIterator<? extends ICitation> getCitationIterator(String groupId, String collectionId);
 
-    Persons findAllPeople(String groupId);
+    Persons findAllPeople(String groupId, long start, int pageSize);
 
-    Citations findCitationsForPerson(Person person);
+    Citations findCitationsByPersonUri(String uri);
+    
+    Citations findCitationsByPersonCitationKey(String citationKey);
 }
