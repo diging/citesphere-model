@@ -20,6 +20,8 @@ public interface CitationRepository extends MongoRepository<Citation, ObjectId> 
     
     List<ICitation> findByParentItemAndItemTypeAndDeleted(String parentItem, String itemType, int deleted);
     
+    List<ICitation> findByParentItemAndItemTypeAndDeletedAndTagsTagNot(String parentItem, String itemType, int deleted, String tag);
+    
     void deleteByGroup(String group);
 
     List<ICitation> findByGilesUploadsDocumentId(String id);
