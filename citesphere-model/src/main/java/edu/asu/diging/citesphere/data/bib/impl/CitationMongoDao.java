@@ -88,6 +88,99 @@ public class CitationMongoDao implements ICitationDao {
         return mongoTemplate.find(query, Citation.class);
     }
     
+    /**
+     * <ul>
+     * <li>JSON format of the pipeline used:</li>
+     * <pre>
+     * [{
+     *     $match: {
+     *       group: '4622578'
+     *      }
+     *   }, {
+     *       $project: {
+     *       _id: '$group',
+     *       persons: {
+     *           $setUnion: [
+     *               '$authors',
+     *               '$editors',
+     *               '$otherCreators.person'
+     *           ]
+     *       },
+     *       citationKey: '$key'
+     *       }
+     *   }, {
+     *       $unwind: {
+     *           path: '$persons'
+     *       }
+     *   }, {
+     *       $group: {
+     *           _id: '$_id',
+     *           persons: {
+     *               $addToSet: {
+     *                   name: '$persons.name',
+     *                   firstName: '$persons.firstName',
+     *                   lastName: '$persons.lastName',
+     *                   uri: '$persons.uri',
+     *                   citationKey: '$citationKey'
+     *               }
+     *           }
+     *       }
+     *   }, {
+     *       $project: {
+     *           _id: '$_id',
+     *           persons: '$persons',
+     *           totalResults: {
+     *               $size: '$persons'
+     *           }
+     *       }
+     *   }, {
+     *       $unwind: {
+     *           path: '$persons'
+     *       }
+     *   }, {
+     *       $sort: {
+     *           'persons.name': 1
+     *       }
+     *   }, {
+     *       $group: {
+     *           _id: '$_id',
+     *           persons: {
+     *               $push: '$persons'
+     *           },
+     *           totalResults: {
+     *               $first: '$totalResults'
+     *           }
+     *       }
+     *   }]</pre>
+     *   
+     *   <li>Other proposed pipeline:</li>
+     *   
+     *   <pre>[{$match: {
+     *         "group": "2601560"
+     *       }}, {$addFields: {
+     *         "persons": {$setUnion: ["$authors", "$editors", "$otherCreators"]}
+     *       }}, {$unwind: {
+     *         path: "$persons"
+     *       }}, {$addFields: {
+     *         "ident": { 
+     *           $cond: {
+     *             if: {$ne: ["$persons.uri", ""]}, 
+     *             then: "$persons.uri", 
+     *             else: {$concat: ["$key","$persons.name"]}
+     *           }
+     *         }
+     *       }
+     *       }, {$group: {
+     *         _id: "$ident",
+     *         persons: {
+     *           $push: "$persons"
+     *         }
+     *      }}]</pre>
+     *</ul>
+     * 
+     * @author Pratik Giri
+     *
+     */
     @Override
     public Persons findAllPeople(String groupId, long start, int pageSize) {
         MatchOperation match = Aggregation.match(Criteria.where("group").is(groupId));
