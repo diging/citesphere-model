@@ -564,7 +564,7 @@ public class Citation implements ICitation {
     }
     
     @Override
-    public int isRemoved() {
+    public int getRemoved() {
         return remove;
     }
     

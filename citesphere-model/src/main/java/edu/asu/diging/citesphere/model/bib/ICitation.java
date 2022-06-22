@@ -189,7 +189,7 @@ public interface ICitation {
 
     boolean isMetaDataNote();
     
-    public int isRemoved();
+    public int getRemoved();
     
     public void setRemoved(int isRemoved);
 }
