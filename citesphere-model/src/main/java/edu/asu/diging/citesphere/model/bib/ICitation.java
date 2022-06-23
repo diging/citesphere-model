@@ -191,5 +191,5 @@ public interface ICitation {
     
     public int getHidden();
     
-    public void setHidden(int isRemoved);
+    public void setHidden(int hidden);
 }
