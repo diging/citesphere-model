@@ -163,7 +163,6 @@ public class CitationFactory implements ICitationFactory {
         
         citation.setMetaDataItemKey(metaData.getKey());
         citation.setMetaDataItemVersion(metaData.getVersion());
-//        citation.setRemoved(metaData.getData().isRemoved());
         
         String note = data.getNote().trim();
         // Zotero adds <p> tags for notes by default and hence the json element could be enclosed within this tags
@@ -275,8 +274,8 @@ public class CitationFactory implements ICitationFactory {
     }
     
     private void processHiddenItems(JsonObject jObj, ICitation citation) {
-        if(jObj.has("removed") && !jObj.get("removed").isJsonNull()) {
-            citation.setRemoved(jObj.get("removed").getAsInt());
+        if(jObj.has("hidden") && !jObj.get("hidden").isJsonNull()) {
+            citation.setHidden(jObj.get("hidden").getAsInt());
         }
     }
 

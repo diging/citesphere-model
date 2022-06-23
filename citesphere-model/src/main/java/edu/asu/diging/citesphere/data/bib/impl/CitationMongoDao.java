@@ -34,9 +34,7 @@ public class CitationMongoDao implements ICitationDao {
             query.addCriteria(Criteria.where("conceptTags.localConceptId").in(conceptIds));
         }
         
-//        query.addCriteria(Criteria.where("remove").exists(false).orOperator(Criteria.where("remove").exists(true).andOperator(Criteria.where("remove").is(0))));
-        
-        query.addCriteria(Criteria.where("remove").is(0));
+        query.addCriteria(Criteria.where("hidden").is(0));
         query.skip(start);
         query.limit(pageSize);
         return mongoTemplate.find(query, Citation.class);
