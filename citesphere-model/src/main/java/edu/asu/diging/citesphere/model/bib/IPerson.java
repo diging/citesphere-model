@@ -36,4 +36,8 @@ public interface IPerson {
     void setLocalAuthorityId(String localAuthorityId);
 
     String getLocalAuthorityId();
+
+    String getCitationKey();
+
+    void setCitationKey(String citationKey);
 }
