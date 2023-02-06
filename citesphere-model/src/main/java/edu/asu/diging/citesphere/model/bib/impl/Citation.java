@@ -82,6 +82,8 @@ public class Citation implements ICitation {
     
     private String extra;
     
+    private List<String> resourceUrls;
+    
     /* (non-Javadoc)
      * @see edu.asu.diging.citesphere.core.model.bib.impl.ICitation#getKey()
      */
@@ -559,6 +561,15 @@ public class Citation implements ICitation {
             return true;
         }
         return false;
+    }
+    
+    @Override
+    public List<String> getResouceUrls() {
+        return resourceUrls;
+    }
+    @Override
+    public void setResouceUrls(List<String> resourceUrls) {
+        this.resourceUrls = resourceUrls;
     }
     
 }

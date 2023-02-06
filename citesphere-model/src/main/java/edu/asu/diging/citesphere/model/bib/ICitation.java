@@ -188,4 +188,8 @@ public interface ICitation {
     void setTags(List<Tag> tags);
 
     boolean isMetaDataNote();
+    
+    List<String> getResouceUrls();
+    
+    void setResouceUrls(List<String> resourceUrls);
 }
