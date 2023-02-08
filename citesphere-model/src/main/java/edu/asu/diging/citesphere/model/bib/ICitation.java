@@ -189,7 +189,7 @@ public interface ICitation {
 
     boolean isMetaDataNote();
     
-    List<String> getResouceUrls();
+    List<String> getResourceUrls();
     
-    void setResouceUrls(List<String> resourceUrls);
+    void setResourceUrls(List<String> resourceUrls);
 }

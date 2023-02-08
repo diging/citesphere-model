@@ -564,12 +564,11 @@ public class Citation implements ICitation {
     }
     
     @Override
-    public List<String> getResouceUrls() {
+    public List<String> getResourceUrls() {
         return resourceUrls;
     }
     @Override
-    public void setResouceUrls(List<String> resourceUrls) {
+    public void setResourceUrls(List<String> resourceUrls) {
         this.resourceUrls = resourceUrls;
     }
-    
 }
