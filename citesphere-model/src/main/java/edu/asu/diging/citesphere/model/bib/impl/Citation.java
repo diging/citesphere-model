@@ -82,7 +82,7 @@ public class Citation implements ICitation {
     
     private String extra;
     
-    private List<String> resourceUrls;
+    private List<String> sameAs;
     
     /* (non-Javadoc)
      * @see edu.asu.diging.citesphere.core.model.bib.impl.ICitation#getKey()
@@ -564,11 +564,11 @@ public class Citation implements ICitation {
     }
     
     @Override
-    public List<String> getResourceUrls() {
-        return resourceUrls;
+    public List<String> getSameAs() {
+        return sameAs;
     }
     @Override
-    public void setResourceUrls(List<String> resourceUrls) {
-        this.resourceUrls = resourceUrls;
+    public void setSameAs(List<String> sameAs) {
+        this.sameAs = sameAs;
     }
 }
