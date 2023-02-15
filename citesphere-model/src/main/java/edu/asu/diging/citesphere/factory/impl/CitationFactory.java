@@ -66,6 +66,7 @@ public class CitationFactory implements ICitationFactory {
         processFunctions.add(this::processOtherCreators);
         processFunctions.add(this::processReferences);
         processFunctions.add(this::processGilesUploads);
+        processFunctions.add(this::processSameAs);
     }
 
     /*
@@ -272,6 +273,16 @@ public class CitationFactory implements ICitationFactory {
         }
     }
 
+    private void processSameAs(JsonObject jObj, ICitation citation) {
+        citation.setReferences(new HashSet<>());
+        if (jObj.has("sameAs") && !jObj.get("sameAs").isJsonNull()) {
+              List<String> sameAsList = new ArrayList<>();
+              JsonArray sameAsArr = jObj.get("sameAs").getAsJsonArray();
+              sameAsArr.forEach(sameAs -> sameAsList.add(sameAs.getAsString()));
+              citation.setSameAs(sameAsList);
+        }
+    }
+    
     private void createReference(ICitation citation, JsonElement ref) {
         IReference reference = new Reference();
         citation.getReferences().add(reference);
