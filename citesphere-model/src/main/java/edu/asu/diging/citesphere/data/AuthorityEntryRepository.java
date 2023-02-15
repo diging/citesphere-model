@@ -21,6 +21,8 @@ public interface AuthorityEntryRepository extends PagingAndSortingRepository<Aut
     
     public List<IAuthorityEntry> findByUsernameAndUriOrderByName(String username, String uri);
     
+    public Page<IAuthorityEntry> findByUsernameAndUriOrderByName(String username, String uri, Pageable pageable);
+    
     public List<IAuthorityEntry> findByGroupsOrderByName(long groupId);
     
     public Page<IAuthorityEntry> findByGroupsOrderByName(long groupId, Pageable pageable);
