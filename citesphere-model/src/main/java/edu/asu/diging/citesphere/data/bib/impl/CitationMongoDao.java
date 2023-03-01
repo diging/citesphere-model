@@ -55,11 +55,11 @@ public class CitationMongoDao implements ICitationDao {
     }
 
     @Override
-    public List<? extends ICitation> findCitationsByUri(String [] groupIds, long start, int pageSize, string uri) {
+    public List<? extends ICitation> findCitationsByUri(List<String> groupIds, long start, int pageSize, String uri) {
         Query query = new Query();
         query.addCriteria(Criteria.where("group").in(groupIds));
         query.addCriteria(new Criteria().orOperator(Criteria.where("deleted").exists(false), Criteria.where("deleted").is(0)));
-        query.addCriteria(new Criteria().orOperator(Criteria.where("authors.uri").is(uri), Criteria.where("editors.uri").is(uri), Criteria.where("otherCreators.person.uri").is(uri)))
+        query.addCriteria(new Criteria().orOperator(Criteria.where("authors.uri").is(uri), Criteria.where("editors.uri").is(uri), Criteria.where("otherCreators.person.uri").is(uri)));
         query.skip(start);
         query.limit(pageSize);
         return mongoTemplate.find(query, Citation.class);
