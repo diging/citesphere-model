@@ -11,6 +11,8 @@ import java.util.TreeSet;
 import java.util.function.BiConsumer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 import javax.annotation.PostConstruct;
 
@@ -276,10 +278,8 @@ public class CitationFactory implements ICitationFactory {
     private void processSameAs(JsonObject jObj, ICitation citation) {
         citation.setReferences(new HashSet<>());
         if (jObj.has("sameAs") && !jObj.get("sameAs").isJsonNull()) {
-              List<String> sameAsList = new ArrayList<>();
-              JsonArray sameAsArr = jObj.get("sameAs").getAsJsonArray();
-              sameAsArr.forEach(sameAs -> sameAsList.add(sameAs.getAsString()));
-              citation.setSameAs(sameAsList);
+              JsonArray sameAsArray = jObj.get("sameAs").getAsJsonArray();
+              citation.setSameAs(StreamSupport.stream(sameAsArray.spliterator(), false).map(json->json.toString()).collect(Collectors.toList()));
         }
     }
     
