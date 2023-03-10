@@ -28,6 +28,7 @@ public class AuthorityEntry implements IAuthorityEntry {
     private String uri;
     private String importerId;
     private String username;
+    private String source;
     private OffsetDateTime createdOn;
     
     @ElementCollection
@@ -98,6 +99,20 @@ public class AuthorityEntry implements IAuthorityEntry {
     @Override
     public void setUsername(String username) {
         this.username = username;
+    }
+    /* (non-Javadoc)
+     * @see edu.asu.diging.citesphere.core.model.authority.impl.IAuthorityEntry#getSource()
+     */
+    @Override
+    public String getSource() {
+        return source;
+    }
+    /* (non-Javadoc)
+     * @see edu.asu.diging.citesphere.core.model.authority.impl.IAuthorityEntry#setSource(java.lang.String)
+     */
+    @Override
+    public void setSource(String source) {
+        this.source = source;
     }
     @Override
     public OffsetDateTime getCreatedOn() {

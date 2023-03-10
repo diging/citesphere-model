@@ -17,6 +17,10 @@ public interface IAuthorityEntry {
 
     void setUri(String uri);
 
+    String getSource();
+
+    void setSource(String source);
+
     void setImporterId(String importerId);
 
     String getImporterId();
