@@ -11,9 +11,9 @@ import edu.asu.diging.citesphere.model.transfer.impl.Persons;
 
 public interface ICitationDao {
 
-    List<? extends ICitation> findCitations(String groupId, long start, int pageSize, boolean isDeleted, List<String> conceptIds);
+    List<? extends ICitation> findCitations(String groupId, long start, int pageSize, boolean isDeleted, List<String> conceptIds, String itemType);
 
-    List<? extends ICitation> findCitationsInCollection(String groupId, String collectionId, long start, int pageSize, List<String> conceptIds);
+    List<? extends ICitation> findCitationsInCollection(String groupId, String collectionId, long start, int pageSize, List<String> conceptIds, String itemType);
 
     /**
      * This method returns an iterator over all citations in a group and if provided

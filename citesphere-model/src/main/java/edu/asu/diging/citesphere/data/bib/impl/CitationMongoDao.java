@@ -37,10 +37,20 @@ public class CitationMongoDao implements ICitationDao {
     private MongoTemplate mongoTemplate;
     
     @Override
-    public List<? extends ICitation> findCitations(String groupId, long start, int pageSize, boolean isDeleted, List<String> conceptIds) {
+    public List<? extends ICitation> findCitations(String groupId, long start, int pageSize, boolean isDeleted, List<String> conceptIds, String itemType) {
+        ItemType type = null;
+        if (itemType != null) {
+            type = ItemType.valueOf(itemType);
+        }
         Query query = new Query();
         query.addCriteria(Criteria.where("group").is(groupId));
-        query.addCriteria(Criteria.where("itemType").ne(ItemType.NOTE.name()).andOperator(Criteria.where("itemType").ne(ItemType.ATTACHMENT.name())));
+        if (type == null) {
+            query.addCriteria(Criteria.where("itemType").ne(ItemType.NOTE.name()).andOperator(Criteria.where("itemType").ne(ItemType.ATTACHMENT.name())));
+        } else {
+            query.addCriteria(Criteria.where("itemType").ne(ItemType.NOTE.name()).andOperator(
+                    Criteria.where("itemType").ne(ItemType.ATTACHMENT.name()),
+                    Criteria.where("itemType").is(type.name())));
+        }
         if (!isDeleted) {
             query.addCriteria(new Criteria().orOperator(Criteria.where("deleted").exists(false), Criteria.where("deleted").is(0)));
         } else {
@@ -74,12 +84,21 @@ public class CitationMongoDao implements ICitationDao {
     }
     
     @Override
-    public List<? extends ICitation> findCitationsInCollection(String groupId, String collectionId, long start, int pageSize, List<String> conceptIds) {
+    public List<? extends ICitation> findCitationsInCollection(String groupId, String collectionId, long start, int pageSize, List<String> conceptIds, String itemType) {
+        ItemType type = null;
+        if (itemType != null) {
+            type = ItemType.valueOf(itemType);
+        }
         Query query = new Query();
         query.addCriteria(Criteria.where("group").is(groupId));
         query.addCriteria(Criteria.where("collections").is(collectionId));
-        query.addCriteria(Criteria.where("itemType").ne(ItemType.NOTE.name())
-                .andOperator(Criteria.where("itemType").ne(ItemType.ATTACHMENT.name())));
+        if (type == null) {
+            query.addCriteria(Criteria.where("itemType").ne(ItemType.NOTE.name()).andOperator(Criteria.where("itemType").ne(ItemType.ATTACHMENT.name())));
+        } else {
+            query.addCriteria(Criteria.where("itemType").ne(ItemType.NOTE.name()).andOperator(
+                    Criteria.where("itemType").ne(ItemType.ATTACHMENT.name()),
+                    Criteria.where("itemType").is(type.name())));
+        }
         if (conceptIds != null && !conceptIds.isEmpty()) {
             query.addCriteria(Criteria.where("conceptTags.localConceptId").in(conceptIds));
         }
