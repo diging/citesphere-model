@@ -82,6 +82,8 @@ public class Citation implements ICitation {
     
     private String extra;
     
+    private int hidden;
+    
     /* (non-Javadoc)
      * @see edu.asu.diging.citesphere.core.model.bib.impl.ICitation#getKey()
      */
@@ -559,6 +561,16 @@ public class Citation implements ICitation {
             return true;
         }
         return false;
+    }
+    
+    @Override
+    public int getHidden() {
+        return hidden;
+    }
+    
+    @Override
+    public void setHidden(int hidden) {
+        this.hidden = hidden;
     }
     
 }

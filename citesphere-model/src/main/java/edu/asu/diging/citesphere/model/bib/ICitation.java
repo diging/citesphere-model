@@ -188,4 +188,8 @@ public interface ICitation {
     void setTags(List<Tag> tags);
 
     boolean isMetaDataNote();
+    
+    public int getHidden();
+    
+    public void setHidden(int hidden);
 }
