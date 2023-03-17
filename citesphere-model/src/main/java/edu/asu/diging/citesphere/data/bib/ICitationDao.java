@@ -15,6 +15,15 @@ public interface ICitationDao {
 
     List<? extends ICitation> findCitationsInCollection(String groupId, String collectionId, long start, int pageSize, List<String> conceptIds);
 
+    /**
+     * This method returns all citations of an user based on the
+     * query param uri.
+     * @param groupIds All Group ids accessed by the user.
+     * @param uri the query param string
+     * @return all citations accessed by the user that has its author's
+     * uri or editor's uri or contributor's uri matched to that of
+     * the query param uri
+     */
     List<? extends ICitation> findCitationsByUri(List<String> groupIds, long start, int pageSize, String uri);
 
     /**
