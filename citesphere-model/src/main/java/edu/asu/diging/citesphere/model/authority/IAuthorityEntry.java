@@ -17,8 +17,16 @@ public interface IAuthorityEntry {
 
     void setUri(String uri);
 
+    /**
+     * getSource to return the source attribute from AuthorityEntry
+     * @return
+     */
     String getSource();
 
+    /**
+     * getSource to set the source attribute based on where AuthorityEntry is imported from
+     * @return
+     */
     void setSource(String source);
 
     void setImporterId(String importerId);
