@@ -55,7 +55,7 @@ public class CitationMongoDao implements ICitationDao {
     }
 
     @Override
-    public List<? extends ICitation> findCitationsByUri(List<String> groupIds, long start, int pageSize, String uri) {
+    public List<? extends ICitation> findCitationsByContributorUri(List<String> groupIds, long start, int pageSize, String uri) {
         Query query = new Query();
         query.addCriteria(Criteria.where("group").in(groupIds));
         query.addCriteria(Criteria.where("deleted").is(0));
