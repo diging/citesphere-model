@@ -20,10 +20,10 @@ public interface ICitationDao {
      * user's groups' and whose authors' uri, editors' uri or
      * other creators' uri matches to that of the argument 'uri'
      * @param groupIds All Group ids belongs to the user.
-     * @param uri the contributor uri of a citation that atleast
+     * @param uri the contributor uri of a citation that at least
      * one of returned citations' authors uri, editors uri or
      * other creators uri should be
-     * @return all citations of user's groups' that has its author's
+     * @return all citations in the given groups that have their author's
      * uri or editor's uri or contributor's uri matched to that of
      * the argument uri
      */
