@@ -19,7 +19,7 @@ public interface ICitationDao {
      * This method returns all citations which belongs to the
      * user's groups' and whose authors' uri, editors' uri or
      * other creators' uri matches to that of the argument 'uri'
-     * @param groupIds All Group ids belongs to the user.
+     * @param Group ids of the groups that should be searched.
      * @param uri the contributor uri of a citation that at least
      * one of returned citations' authors uri, editors uri or
      * other creators uri should be
