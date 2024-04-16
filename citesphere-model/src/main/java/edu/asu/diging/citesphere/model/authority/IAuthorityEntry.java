@@ -18,13 +18,13 @@ public interface IAuthorityEntry {
     void setUri(String uri);
 
     /**
-     * getSource to return the source attribute from AuthorityEntry
+     * getSource to return the source attribute from AuthorityEntry. Source can be VIAF, Conceptpower, etc. 
      * @return
      */
     String getSource();
 
     /**
-     * getSource to set the source attribute based on where AuthorityEntry is imported from
+     * setSource to set the source attribute based on where AuthorityEntry is imported from (e.g. VIAF, Conceptpower, etc)
      * @return
      */
     void setSource(String source);
