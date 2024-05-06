@@ -16,6 +16,20 @@ public interface ICitationDao {
     List<? extends ICitation> findCitationsInCollection(String groupId, String collectionId, long start, int pageSize, List<String> conceptIds);
 
     /**
+     * This method returns all citations which belongs to the
+     * user's groups' and whose authors' uri, editors' uri or
+     * other creators' uri matches to that of the argument 'uri'
+     * @param Group ids of the groups that should be searched.
+     * @param uri the contributor uri of a citation that at least
+     * one of returned citations' authors uri, editors uri or
+     * other creators uri should be
+     * @return all citations in the given groups that have their author's
+     * uri or editor's uri or contributor's uri matched to that of
+     * the argument uri
+     */
+    List<? extends ICitation> findCitationsByContributorUri(List<String> groupIds, long start, int pageSize, String uri);
+
+    /**
      * This method returns an iterator over all citations in a group and if provided
      * in a collection. This iterator should return the most memory efficient way
      * to iterate over many citations.

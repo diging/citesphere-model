@@ -49,6 +49,19 @@ public class CitationMongoDao implements ICitationDao {
         if (conceptIds != null && !conceptIds.isEmpty()) {
             query.addCriteria(Criteria.where("conceptTags.localConceptId").in(conceptIds));
         }
+        
+        query.addCriteria(Criteria.where("hidden").is(0));
+        query.skip(start);
+        query.limit(pageSize);
+        return mongoTemplate.find(query, Citation.class);
+    }
+
+    @Override
+    public List<? extends ICitation> findCitationsByContributorUri(List<String> groupIds, long start, int pageSize, String uri) {
+        Query query = new Query();
+        query.addCriteria(Criteria.where("group").in(groupIds));
+        query.addCriteria(Criteria.where("deleted").is(0));
+        query.addCriteria(new Criteria().orOperator(Criteria.where("authors.uri").is(uri), Criteria.where("editors.uri").is(uri), Criteria.where("otherCreators.person.uri").is(uri)));
         query.skip(start);
         query.limit(pageSize);
         return mongoTemplate.find(query, Citation.class);
