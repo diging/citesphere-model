@@ -67,6 +67,15 @@ public class CitationMongoDao implements ICitationDao {
         return mongoTemplate.find(query, Citation.class);
     }
     
+    @Override
+    public long countCitationsByContributorUri(List<String> groupIds, String uri) {
+    	Query query = new Query();
+    	query.addCriteria(Criteria.where("group").in(groupIds));
+        query.addCriteria(Criteria.where("deleted").is(0));
+        query.addCriteria(new Criteria().orOperator(Criteria.where("authors.uri").is(uri), Criteria.where("editors.uri").is(uri), Criteria.where("otherCreators.person.uri").is(uri)));
+        return mongoTemplate.count(query, Citation.class);	
+    }
+    
     /**
      * This method returns an iterator based on a MongoDB cursor.
      * 
