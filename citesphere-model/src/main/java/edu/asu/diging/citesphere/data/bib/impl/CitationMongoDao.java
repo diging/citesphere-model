@@ -55,25 +55,27 @@ public class CitationMongoDao implements ICitationDao {
         query.limit(pageSize);
         return mongoTemplate.find(query, Citation.class);
     }
+    
+    @Override
+    public Query buildQueryToFindCitationsByContributorUri(List<String> groupIds, String uri) {
+    	Query query = new Query();
+    	query.addCriteria(Criteria.where("group").in(groupIds));
+        query.addCriteria(Criteria.where("deleted").is(0));
+        query.addCriteria(new Criteria().orOperator(Criteria.where("authors.uri").is(uri), Criteria.where("editors.uri").is(uri), Criteria.where("otherCreators.person.uri").is(uri)));
+        return query;
+    }
 
     @Override
     public List<? extends ICitation> findCitationsByContributorUri(List<String> groupIds, long start, int pageSize, String uri) {
-        Query query = new Query();
-        query.addCriteria(Criteria.where("group").in(groupIds));
-        query.addCriteria(Criteria.where("deleted").is(0));
-        query.addCriteria(new Criteria().orOperator(Criteria.where("authors.uri").is(uri), Criteria.where("editors.uri").is(uri), Criteria.where("otherCreators.person.uri").is(uri)));
-        query.skip(start);
+        Query query = buildQueryToFindCitationsByContributorUri(groupIds, uri); 
+    	query.skip(start);
         query.limit(pageSize);
         return mongoTemplate.find(query, Citation.class);
     }
     
     @Override
     public long countCitationsByContributorUri(List<String> groupIds, String uri) {
-    	Query query = new Query();
-    	query.addCriteria(Criteria.where("group").in(groupIds));
-        query.addCriteria(Criteria.where("deleted").is(0));
-        query.addCriteria(new Criteria().orOperator(Criteria.where("authors.uri").is(uri), Criteria.where("editors.uri").is(uri), Criteria.where("otherCreators.person.uri").is(uri)));
-        return mongoTemplate.count(query, Citation.class);	
+    	return mongoTemplate.count(buildQueryToFindCitationsByContributorUri(groupIds, uri) , Citation.class);	
     }
     
     /**

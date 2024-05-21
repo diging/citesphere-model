@@ -2,6 +2,7 @@ package edu.asu.diging.citesphere.data.bib;
 
 import java.util.List;
 
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.util.CloseableIterator;
 
 import edu.asu.diging.citesphere.model.bib.ICitation;
@@ -15,6 +16,22 @@ public interface ICitationDao {
 
     List<? extends ICitation> findCitationsInCollection(String groupId, String collectionId, long start, int pageSize, List<String> conceptIds);
 
+   
+    /**
+     * This method returns a query that is built to find all citations
+     * belong to the user's groups' and whose authors' uri, editors' uri or
+     * other creators' uri matches to that of the argument 'uri'
+     * @param Group ids of the groups that should be searched.
+     * @param uri the contributor uri of a citation that at least
+     * one of returned citations' authors uri, editors uri or
+     * other creators uri should be
+     * @return a query that can be used or further updated to find 
+     * total count of citations or fetch citations in the given groups
+     * that have their author's uri or editor's uri or contributor's 
+     * uri matched to that of the argument uriauthor's .
+     */ 
+    Query buildQueryToFindCitationsByContributorUri(List<String> groupIds, String uri);
+    
     /**
      * This method returns all citations which belongs to the
      * user's groups' and whose authors' uri, editors' uri or
