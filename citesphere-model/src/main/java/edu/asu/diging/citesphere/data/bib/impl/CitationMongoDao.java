@@ -56,26 +56,38 @@ public class CitationMongoDao implements ICitationDao {
         return mongoTemplate.find(query, Citation.class);
     }
     
-    @Override
-    public Query buildQueryToFindCitationsByContributorUri(List<String> groupIds, String uri) {
-    	Query query = new Query();
-    	query.addCriteria(Criteria.where("group").in(groupIds));
+    /**
+     * This method returns a query that is built to find all citations
+     * belong to the user's groups' and whose authors' uri, editors' uri or
+     * other creators' uri matches to that of the argument 'contributorUri'
+     * @param Group ids of the groups that should be searched.
+     * @param the contributor uri of a citation that at least
+     * one of returned citations' authors uri, editors uri or
+     * other creators uri should be
+     * @return a query that can be used or further updated to find
+     * total count of citations or fetch citations in the given groups
+     * that have their author's uri or editor's uri or contributor's
+     * uri matched to that of the argument uriauthor's.
+     */
+    private Query buildCitationsByContributorQuery(List<String> groupIds, String contributorUri) {
+        Query query = new Query();
+        query.addCriteria(Criteria.where("group").in(groupIds));
         query.addCriteria(Criteria.where("deleted").is(0));
-        query.addCriteria(new Criteria().orOperator(Criteria.where("authors.uri").is(uri), Criteria.where("editors.uri").is(uri), Criteria.where("otherCreators.person.uri").is(uri)));
+        query.addCriteria(new Criteria().orOperator(Criteria.where("authors.uri").is(contributorUri), Criteria.where("editors.uri").is(contributorUri), Criteria.where("otherCreators.person.uri").is(contributorUri)));
         return query;
     }
 
     @Override
-    public List<? extends ICitation> findCitationsByContributorUri(List<String> groupIds, long start, int pageSize, String uri) {
-        Query query = buildQueryToFindCitationsByContributorUri(groupIds, uri); 
-    	query.skip(start);
+    public List<? extends ICitation> findCitationsByContributor(List<String> groupIds, long start, int pageSize, String contributorUri) {
+        Query query = buildCitationsByContributorQuery(groupIds, contributorUri);
+        query.skip(start);
         query.limit(pageSize);
         return mongoTemplate.find(query, Citation.class);
     }
     
     @Override
-    public long countCitationsByContributorUri(List<String> groupIds, String uri) {
-    	return mongoTemplate.count(buildQueryToFindCitationsByContributorUri(groupIds, uri) , Citation.class);	
+    public long countCitationsByContributor(List<String> groupIds, String contributorUri) {
+        return mongoTemplate.count(buildCitationsByContributorQuery(groupIds, contributorUri) , Citation.class);
     }
     
     /**
