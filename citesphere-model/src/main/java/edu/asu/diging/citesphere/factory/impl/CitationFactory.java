@@ -66,6 +66,7 @@ public class CitationFactory implements ICitationFactory {
         processFunctions.add(this::processOtherCreators);
         processFunctions.add(this::processReferences);
         processFunctions.add(this::processGilesUploads);
+        processFunctions.add(this::processHiddenItems);
     }
 
     /*
@@ -269,6 +270,12 @@ public class CitationFactory implements ICitationFactory {
                 }
             });
             
+        }
+    }
+    
+    private void processHiddenItems(JsonObject jObj, ICitation citation) {
+        if(jObj.has("hidden") && !jObj.get("hidden").isJsonNull()) {
+            citation.setHidden(jObj.get("hidden").getAsInt());
         }
     }
 

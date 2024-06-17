@@ -7,9 +7,12 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.aggregation.Aggregation;
 import org.springframework.data.mongodb.core.aggregation.AggregationResults;
+import org.springframework.data.mongodb.core.aggregation.ConditionalOperators;
 import org.springframework.data.mongodb.core.aggregation.GroupOperation;
+import org.springframework.data.mongodb.core.aggregation.LimitOperation;
 import org.springframework.data.mongodb.core.aggregation.MatchOperation;
 import org.springframework.data.mongodb.core.aggregation.ProjectionOperation;
+import org.springframework.data.mongodb.core.aggregation.SkipOperation;
 import org.springframework.data.mongodb.core.aggregation.SortOperation;
 import org.springframework.data.mongodb.core.aggregation.UnwindOperation;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -18,13 +21,14 @@ import org.springframework.data.util.CloseableIterator;
 import org.springframework.stereotype.Repository;
 
 import com.mongodb.BasicDBObject;
-
 import edu.asu.diging.citesphere.data.bib.ICitationDao;
 import edu.asu.diging.citesphere.model.bib.ICitation;
 import edu.asu.diging.citesphere.model.bib.ItemType;
 import edu.asu.diging.citesphere.model.bib.impl.Citation;
+import edu.asu.diging.citesphere.model.bib.impl.Person;
 import edu.asu.diging.citesphere.model.transfer.impl.Citations;
 import edu.asu.diging.citesphere.model.transfer.impl.Persons;
+
 
 @Repository
 public class CitationMongoDao implements ICitationDao {
@@ -45,9 +49,45 @@ public class CitationMongoDao implements ICitationDao {
         if (conceptIds != null && !conceptIds.isEmpty()) {
             query.addCriteria(Criteria.where("conceptTags.localConceptId").in(conceptIds));
         }
+        
+        query.addCriteria(Criteria.where("hidden").is(0));
         query.skip(start);
         query.limit(pageSize);
         return mongoTemplate.find(query, Citation.class);
+    }
+    
+    /**
+     * This method returns a query that is built to find all citations
+     * belong to the user's groups' and whose authors' uri, editors' uri or
+     * other creators' uri matches to that of the argument 'contributorUri'
+     * @param Group ids of the groups that should be searched.
+     * @param the contributor uri of a citation that at least
+     * one of returned citations' authors uri, editors uri or
+     * other creators uri should be
+     * @return a query that can be used or further updated to find
+     * total count of citations or fetch citations in the given groups
+     * that have their author's uri or editor's uri or contributor's
+     * uri matched to that of the argument uriauthor's.
+     */
+    private Query buildCitationsByContributorQuery(List<String> groupIds, String contributorUri) {
+        Query query = new Query();
+        query.addCriteria(Criteria.where("group").in(groupIds));
+        query.addCriteria(Criteria.where("deleted").is(0));
+        query.addCriteria(new Criteria().orOperator(Criteria.where("authors.uri").is(contributorUri), Criteria.where("editors.uri").is(contributorUri), Criteria.where("otherCreators.person.uri").is(contributorUri)));
+        return query;
+    }
+
+    @Override
+    public List<? extends ICitation> findCitationsByContributor(List<String> groupIds, long start, int pageSize, String contributorUri) {
+        Query query = buildCitationsByContributorQuery(groupIds, contributorUri);
+        query.skip(start);
+        query.limit(pageSize);
+        return mongoTemplate.find(query, Citation.class);
+    }
+    
+    @Override
+    public long countCitationsByContributor(List<String> groupIds, String contributorUri) {
+        return mongoTemplate.count(buildCitationsByContributorQuery(groupIds, contributorUri) , Citation.class);
     }
     
     /**
@@ -83,22 +123,169 @@ public class CitationMongoDao implements ICitationDao {
         query.limit(pageSize);
         return mongoTemplate.find(query, Citation.class);
     }
+    
+    /**
+     * <ul>
+     * <li>JSON format of the pipeline used:</li>
+     * <pre>
+     * [{
+     *     $match: {
+     *       group: '4622578'
+     *      }
+     *   }, {
+     *       $project: {
+     *       _id: '$group',
+     *       persons: {
+     *           $setUnion: [
+     *               '$authors',
+     *               '$editors',
+     *               '$otherCreators.person'
+     *           ]
+     *       },
+     *       citationKey: '$key'
+     *       }
+     *   }, {
+     *       $unwind: {
+     *           path: '$persons'
+     *       }
+     *   }, {
+     *       $group: {
+     *           _id: '$_id',
+     *           persons: {
+     *               $addToSet: {
+     *                   name: '$persons.name',
+     *                   firstName: '$persons.firstName',
+     *                   lastName: '$persons.lastName',
+     *                   uri: '$persons.uri',
+     *                   citationKey: '$citationKey'
+     *               }
+     *           }
+     *       }
+     *   }, {
+     *       $project: {
+     *           _id: '$_id',
+     *           persons: '$persons',
+     *           totalResults: {
+     *               $size: '$persons'
+     *           }
+     *       }
+     *   }, {
+     *       $unwind: {
+     *           path: '$persons'
+     *       }
+     *   }, {
+     *       $sort: {
+     *           'persons.name': 1
+     *       }
+     *   }, {
+     *       $group: {
+     *           _id: '$_id',
+     *           persons: {
+     *               $push: '$persons'
+     *           },
+     *           totalResults: {
+     *               $first: '$totalResults'
+     *           }
+     *       }
+     *   }]</pre>
+     *   
+     *   <li>Other proposed pipeline:</li>
+     *   
+     *   <pre>[{$match: {
+     *         "group": "2601560"
+     *       }}, {$addFields: {
+     *         "persons": {$setUnion: ["$authors", "$editors", "$otherCreators"]}
+     *       }}, {$unwind: {
+     *         path: "$persons"
+     *       }}, {$addFields: {
+     *         "ident": { 
+     *           $cond: {
+     *             if: {$ne: ["$persons.uri", ""]}, 
+     *             then: "$persons.uri", 
+     *             else: {$concat: ["$key","$persons.name"]}
+     *           }
+     *         }
+     *       }
+     *       }, {$group: {
+     *         _id: "$ident",
+     *         persons: {
+     *           $push: "$persons"
+     *         }
+     *      }}]</pre>
+     *</ul>
+     * 
+     * @author Pratik Giri
+     *
+     */
     @Override
-    public Citations findCitatationByName(String name){
-    	name=" "+name;
-        ProjectionOperation project = Aggregation.project().and("authors")
-                .unionArrays("editors", "otherCreators.person").as("persons").and(Aggregation.ROOT).as("citation");
-        
+    public Persons findAllPeople(String groupId, long start, int pageSize) {
+        MatchOperation match = Aggregation.match(Criteria.where("group").is(groupId));
+
+        ProjectionOperation project = Aggregation.project().and("group").as("_id").and("authors")
+                .unionArrays("editors", "otherCreators.person").as("persons").and("key").as("citationKey");
+
         UnwindOperation unwind = Aggregation.unwind("persons");
 
-        MatchOperation match = Aggregation.match(Criteria.where("persons.name").is(name));
+        GroupOperation group = Aggregation.group("_id").addToSet(new BasicDBObject() {
+            {
+                put("name", "$persons.name");
+                put("firstName", "$persons.firstName");
+                put("lastName", "$persons.lastName");
+                put("uri", "$persons.uri");
+                put("citationKey", "$citationKey");
+            }
+        }).as("persons");
 
-        GroupOperation group = Aggregation.group("persons.name").push("citation").as("citations");
-
+        ProjectionOperation projectResultCount = Aggregation.project().and("_id").as("_id").and("persons")
+                .as("persons").and("persons").size().as("totalResults");
         
-        AggregationResults<Citations> result = mongoTemplate.aggregate(
-                Aggregation.newAggregation(project, unwind, match, group),
-                Citation.class, Citations.class);
+        UnwindOperation unwind1 = Aggregation.unwind("persons");
+
+        SortOperation sort = Aggregation.sort(Direction.ASC, "persons.name");
+        
+        SkipOperation skip = Aggregation.skip(start);
+        
+        LimitOperation limit = Aggregation.limit(pageSize);
+
+        GroupOperation groupAfterSort = Aggregation.group("_id").push("persons").as("persons")
+                .first("totalResults").as("totalResults");
+
+        AggregationResults<Persons> result = mongoTemplate.aggregate(
+                Aggregation.newAggregation(match, project, unwind, group, projectResultCount, unwind1, sort, skip, limit, groupAfterSort),
+                Citation.class, Persons.class);
 
         return result.getUniqueMappedResult();
-    }}
+    }
+
+    @Override
+    public Citations findCitationsByPersonUri(String uri) {
+
+        ProjectionOperation project = Aggregation.project().and("authors")
+                .unionArrays("editors", "otherCreators.person").as("persons").and(Aggregation.ROOT).as("citation");
+
+        UnwindOperation unwind = Aggregation.unwind("persons");
+
+        MatchOperation match = Aggregation.match(Criteria.where("persons.uri").is(uri));
+
+        GroupOperation group = Aggregation.group("persons.uri").addToSet("citation").as("citations");
+
+        AggregationResults<Citations> result = mongoTemplate
+                .aggregate(Aggregation.newAggregation(project, unwind, match, group), Citation.class, Citations.class);
+
+        return result.getUniqueMappedResult();
+    }
+    
+    @Override
+    public Citations findCitationsByPersonCitationKey(String citationKey) {
+
+        MatchOperation match = Aggregation.match(Criteria.where("key").is(citationKey));
+
+        GroupOperation group = Aggregation.group("id").addToSet(Aggregation.ROOT).as("citations");
+
+        AggregationResults<Citations> result = mongoTemplate
+                .aggregate(Aggregation.newAggregation(match, group), Citation.class, Citations.class);
+
+        return result.getUniqueMappedResult();
+    }
+    
+}
