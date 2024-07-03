@@ -7,6 +7,7 @@ import javax.persistence.ElementCollection;
 import javax.persistence.Id;
 
 import org.bson.types.ObjectId;
+import org.springframework.data.mongodb.core.index.Indexed;
 
 import edu.asu.diging.citesphere.model.bib.ICitationGroup;
 
@@ -15,6 +16,7 @@ public class CitationGroup implements ICitationGroup {
     @Id
     private ObjectId id;
     private long groupId;
+    @Indexed(unique = true)
     private String name;
     private long metadataVersion;
     private long contentVersion;
