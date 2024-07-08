@@ -33,7 +33,6 @@ public class Citation implements ICitation {
     private String group;
     
     private long version;
-    @Indexed(unique=true)
     private String title;
     private String parentItem;
     private Set<IPerson> authors;

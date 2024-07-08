@@ -15,8 +15,8 @@ public class CitationGroup implements ICitationGroup {
 
     @Id
     private ObjectId id;
-    private long groupId;
     @Indexed(unique = true)
+    private long groupId;
     private String name;
     private long metadataVersion;
     private long contentVersion;

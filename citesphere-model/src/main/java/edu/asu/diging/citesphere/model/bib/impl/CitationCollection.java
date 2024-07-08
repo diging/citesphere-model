@@ -14,12 +14,12 @@ public class CitationCollection implements ICitationCollection {
     @Id
     private ObjectId id;
     @Column(name="collectionKey")
+    @Indexed(unique = true)
     private String key;
     private long version;
     private long contentVersion;
     private long numberOfCollections;
     private long numberOfItems;
-    @Indexed(unique = true)
     private String name;
     private String parentCollectionKey;
     private String lastModified;
