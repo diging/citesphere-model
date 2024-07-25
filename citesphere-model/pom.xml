@@ -38,7 +38,8 @@
         <com.fasterxml.jackson.version>2.9.10.7</com.fasterxml.jackson.version>
         <spring-security-version>5.1.11.RELEASE</spring-security-version>
         <javers.version>5.0.0</javers.version>
-        <spring-social-zotero.version>0.7</spring-social-zotero.version>
+        <spring-social-zotero.version>0.13-SNAPSHOT</spring-social-zotero.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
     
     <repositories>
