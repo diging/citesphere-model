@@ -134,7 +134,7 @@ public class CitationFactory implements ICitationFactory {
         citation.setArchive(item.getData().getArchive());
         citation.setArchiveLocation(item.getData().getArchiveLocation());
         citation.setCallNumber(item.getData().getCallNumber());
-        citation.setDoi(item.getData().getDOI());
+        citation.setDoi(item.getData().getDoi());
         citation.setIssn(item.getData().getIssn());
         citation.setJournalAbbreviation(item.getData().getJournalAbbreviation());
         citation.setLanguage(item.getData().getLanguage());
