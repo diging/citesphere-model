@@ -3,9 +3,14 @@ package edu.asu.diging.citesphere.model.bib;
 import java.util.List;
 import java.util.Set;
 
+import org.bson.types.ObjectId;
 import org.springframework.social.zotero.api.Tag;
 
 public interface ICitation {
+    
+    ObjectId getId();
+    
+    void setId(ObjectId id);
 
     String getKey();
 
