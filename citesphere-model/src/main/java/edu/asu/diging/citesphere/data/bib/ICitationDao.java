@@ -1,12 +1,11 @@
 package edu.asu.diging.citesphere.data.bib;
 
 import java.util.List;
+import java.util.Set;
 
-import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.util.CloseableIterator;
 
 import edu.asu.diging.citesphere.model.bib.ICitation;
-import edu.asu.diging.citesphere.model.bib.impl.Person;
 import edu.asu.diging.citesphere.model.transfer.impl.Citations;
 import edu.asu.diging.citesphere.model.transfer.impl.Persons;
 
@@ -57,7 +56,7 @@ public interface ICitationDao {
 
     Persons findAllPeople(String groupId, long start, int pageSize);
 
-    Citations findCitationsByPersonUri(String uri);
+    Citations findCitationsByPersonUri(String uri, Set<String> groupIds);
     
     Citations findCitationsByPersonCitationKey(String citationKey);
 }
