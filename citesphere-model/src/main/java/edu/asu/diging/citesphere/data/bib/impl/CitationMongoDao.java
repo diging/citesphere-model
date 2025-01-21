@@ -1,13 +1,13 @@
 package edu.asu.diging.citesphere.data.bib.impl;
 
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.aggregation.Aggregation;
 import org.springframework.data.mongodb.core.aggregation.AggregationResults;
-import org.springframework.data.mongodb.core.aggregation.ConditionalOperators;
 import org.springframework.data.mongodb.core.aggregation.GroupOperation;
 import org.springframework.data.mongodb.core.aggregation.LimitOperation;
 import org.springframework.data.mongodb.core.aggregation.MatchOperation;
@@ -21,11 +21,11 @@ import org.springframework.data.util.CloseableIterator;
 import org.springframework.stereotype.Repository;
 
 import com.mongodb.BasicDBObject;
+
 import edu.asu.diging.citesphere.data.bib.ICitationDao;
 import edu.asu.diging.citesphere.model.bib.ICitation;
 import edu.asu.diging.citesphere.model.bib.ItemType;
 import edu.asu.diging.citesphere.model.bib.impl.Citation;
-import edu.asu.diging.citesphere.model.bib.impl.Person;
 import edu.asu.diging.citesphere.model.transfer.impl.Citations;
 import edu.asu.diging.citesphere.model.transfer.impl.Persons;
 
@@ -258,14 +258,16 @@ public class CitationMongoDao implements ICitationDao {
     }
 
     @Override
-    public Citations findCitationsByPersonUri(String uri) {
+    public Citations findCitationsByPersonUri(String uri, Set<String> groupIds) {
 
-        ProjectionOperation project = Aggregation.project().and("authors")
-                .unionArrays("editors", "otherCreators.person").as("persons").and(Aggregation.ROOT).as("citation");
+        ProjectionOperation project = Aggregation.project()
+                .and("authors").unionArrays("editors", "otherCreators.person").as("persons")
+                .and("group").as("group")
+                .and(Aggregation.ROOT).as("citation");
 
         UnwindOperation unwind = Aggregation.unwind("persons");
 
-        MatchOperation match = Aggregation.match(Criteria.where("persons.uri").is(uri));
+        MatchOperation match = Aggregation.match(Criteria.where("persons.uri").is(uri).and("group").in(groupIds));
 
         GroupOperation group = Aggregation.group("persons.uri").addToSet("citation").as("citations");
 
