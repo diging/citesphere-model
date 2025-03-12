@@ -4,6 +4,8 @@ import java.time.OffsetDateTime;
 import java.util.Set;
 import java.util.TreeSet;
 
+import javax.annotation.PostConstruct;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +32,13 @@ public class CitationFactory implements ICitationFactory {
     @Autowired
     private IDateParser dateParser;
     
-    private ParseExtra parseExtra = new ParseExtra();
+    private ParseExtra parseExtra;
+    
+    @PostConstruct
+    public void init() {
+        parseExtra = new ParseExtra();
+        parseExtra.init();
+    }
 
     /*
      * (non-Javadoc)

@@ -10,8 +10,6 @@ import java.util.function.BiConsumer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import javax.annotation.PostConstruct;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.social.zotero.api.Data;
@@ -43,7 +41,6 @@ public class ParseExtra {
     
     private List<BiConsumer<JsonObject, ICitation>> processFunctions;
     
-    @PostConstruct
     public void init() {
         processFunctions = new ArrayList<BiConsumer<JsonObject, ICitation>>();
         processFunctions.add(this::processAuthors);
