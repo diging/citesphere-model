@@ -35,7 +35,7 @@ import edu.asu.diging.citesphere.model.bib.impl.GilesUpload;
 import edu.asu.diging.citesphere.model.bib.impl.Person;
 import edu.asu.diging.citesphere.model.bib.impl.Reference;
 
-public class ParseExtra {
+public class ExtraParser {
     
     private final Logger logger = LoggerFactory.getLogger(getClass());
     

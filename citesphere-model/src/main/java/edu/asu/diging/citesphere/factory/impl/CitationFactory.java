@@ -6,8 +6,6 @@ import java.util.TreeSet;
 
 import javax.annotation.PostConstruct;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.social.zotero.api.Creator;
 import org.springframework.social.zotero.api.Data;
@@ -27,17 +25,15 @@ import edu.asu.diging.citesphere.model.bib.impl.Person;
 @Component
 public class CitationFactory implements ICitationFactory {
     
-    private final Logger logger = LoggerFactory.getLogger(getClass());
-
     @Autowired
     private IDateParser dateParser;
     
-    private ParseExtra parseExtra;
+    private ExtraParser extraParser;
     
     @PostConstruct
     public void init() {
-        parseExtra = new ParseExtra();
-        parseExtra.init();
+        extraParser = new ExtraParser();
+        extraParser.init();
     }
 
     /*
@@ -118,9 +114,9 @@ public class CitationFactory implements ICitationFactory {
         citation.setDateAdded(item.getData().getDateAdded());
 
         if (metaData != null) {
-            parseExtra.parseMetaDataNote(citation, metaData);
+            extraParser.parseMetaDataNote(citation, metaData);
         } else {
-            parseExtra.parseExtra(data, citation);
+            extraParser.parseExtra(data, citation);
         }
         
         return citation;
