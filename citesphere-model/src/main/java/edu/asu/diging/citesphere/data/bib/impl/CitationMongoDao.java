@@ -1,13 +1,13 @@
 package edu.asu.diging.citesphere.data.bib.impl;
 
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.aggregation.Aggregation;
 import org.springframework.data.mongodb.core.aggregation.AggregationResults;
-import org.springframework.data.mongodb.core.aggregation.ConditionalOperators;
 import org.springframework.data.mongodb.core.aggregation.GroupOperation;
 import org.springframework.data.mongodb.core.aggregation.LimitOperation;
 import org.springframework.data.mongodb.core.aggregation.MatchOperation;
@@ -21,11 +21,11 @@ import org.springframework.data.util.CloseableIterator;
 import org.springframework.stereotype.Repository;
 
 import com.mongodb.BasicDBObject;
+
 import edu.asu.diging.citesphere.data.bib.ICitationDao;
 import edu.asu.diging.citesphere.model.bib.ICitation;
 import edu.asu.diging.citesphere.model.bib.ItemType;
 import edu.asu.diging.citesphere.model.bib.impl.Citation;
-import edu.asu.diging.citesphere.model.bib.impl.Person;
 import edu.asu.diging.citesphere.model.transfer.impl.Citations;
 import edu.asu.diging.citesphere.model.transfer.impl.Persons;
 
@@ -55,16 +55,39 @@ public class CitationMongoDao implements ICitationDao {
         query.limit(pageSize);
         return mongoTemplate.find(query, Citation.class);
     }
-
-    @Override
-    public List<? extends ICitation> findCitationsByContributorUri(List<String> groupIds, long start, int pageSize, String uri) {
+    
+    /**
+     * This method returns a query that is built to find all citations
+     * belong to the user's groups' and whose authors' uri, editors' uri or
+     * other creators' uri matches to that of the argument 'contributorUri'
+     * @param Group ids of the groups that should be searched.
+     * @param the contributor uri of a citation that at least
+     * one of returned citations' authors uri, editors uri or
+     * other creators uri should be
+     * @return a query that can be used or further updated to find
+     * total count of citations or fetch citations in the given groups
+     * that have their author's uri or editor's uri or contributor's
+     * uri matched to that of the argument uriauthor's.
+     */
+    private Query buildCitationsByContributorQuery(List<String> groupIds, String contributorUri) {
         Query query = new Query();
         query.addCriteria(Criteria.where("group").in(groupIds));
         query.addCriteria(Criteria.where("deleted").is(0));
-        query.addCriteria(new Criteria().orOperator(Criteria.where("authors.uri").is(uri), Criteria.where("editors.uri").is(uri), Criteria.where("otherCreators.person.uri").is(uri)));
+        query.addCriteria(new Criteria().orOperator(Criteria.where("authors.uri").is(contributorUri), Criteria.where("editors.uri").is(contributorUri), Criteria.where("otherCreators.person.uri").is(contributorUri)));
+        return query;
+    }
+
+    @Override
+    public List<? extends ICitation> findCitationsByContributor(List<String> groupIds, long start, int pageSize, String contributorUri) {
+        Query query = buildCitationsByContributorQuery(groupIds, contributorUri);
         query.skip(start);
         query.limit(pageSize);
         return mongoTemplate.find(query, Citation.class);
+    }
+    
+    @Override
+    public long countCitationsByContributor(List<String> groupIds, String contributorUri) {
+        return mongoTemplate.count(buildCitationsByContributorQuery(groupIds, contributorUri) , Citation.class);
     }
     
     /**
@@ -235,14 +258,16 @@ public class CitationMongoDao implements ICitationDao {
     }
 
     @Override
-    public Citations findCitationsByPersonUri(String uri) {
+    public Citations findCitationsByPersonUri(String uri, Set<String> groupIds) {
 
-        ProjectionOperation project = Aggregation.project().and("authors")
-                .unionArrays("editors", "otherCreators.person").as("persons").and(Aggregation.ROOT).as("citation");
+        ProjectionOperation project = Aggregation.project()
+                .and("authors").unionArrays("editors", "otherCreators.person").as("persons")
+                .and("group").as("group")
+                .and(Aggregation.ROOT).as("citation");
 
         UnwindOperation unwind = Aggregation.unwind("persons");
 
-        MatchOperation match = Aggregation.match(Criteria.where("persons.uri").is(uri));
+        MatchOperation match = Aggregation.match(Criteria.where("persons.uri").is(uri).and("group").in(groupIds));
 
         GroupOperation group = Aggregation.group("persons.uri").addToSet("citation").as("citations");
 

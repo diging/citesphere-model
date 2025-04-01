@@ -84,6 +84,14 @@ public class Citation implements ICitation {
     
     private int hidden;
     
+    @Override
+    public ObjectId getId() {
+        return id;
+    }
+    @Override
+    public void setId(ObjectId id) {
+        this.id = id;
+    }
     /* (non-Javadoc)
      * @see edu.asu.diging.citesphere.core.model.bib.impl.ICitation#getKey()
      */
