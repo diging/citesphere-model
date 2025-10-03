@@ -39,22 +39,23 @@ public class CitationMongoDao implements ICitationDao {
     @Override
     public List<? extends ICitation> findCitations(String groupId, long start, int pageSize, boolean isDeleted, List<String> conceptIds, ItemType type) {
         Query query = new Query();
-        query.addCriteria(Criteria.where("group").is(groupId));
+        java.util.List<Criteria> andCriteria = new java.util.ArrayList<>();
+        andCriteria.add(Criteria.where("group").is(groupId));
+        andCriteria.add(Criteria.where("itemType").nin(ItemType.NOTE.name(), ItemType.ATTACHMENT.name()));
         if (type != null) {
-            query.addCriteria(new Criteria().andOperator(
-                    Criteria.where("itemType").nin(ItemType.NOTE.name(), ItemType.ATTACHMENT.name()),
-                    Criteria.where("itemType").is(type.name())));
-        } else {
-            query.addCriteria(Criteria.where("itemType").nin(ItemType.NOTE.name(), ItemType.ATTACHMENT.name()));
+            andCriteria.add(Criteria.where("itemType").is(type.name()));
         }
         if (!isDeleted) {
-            query.addCriteria(new Criteria().orOperator(Criteria.where("deleted").exists(false), Criteria.where("deleted").is(0)));
+            andCriteria.add(new Criteria().orOperator(
+                    Criteria.where("deleted").exists(false),
+                    Criteria.where("deleted").is(0)));
         } else {
-            query.addCriteria(Criteria.where("deleted").is(1));
+            andCriteria.add(Criteria.where("deleted").is(1));
         }
         if (conceptIds != null && !conceptIds.isEmpty()) {
-            query.addCriteria(Criteria.where("conceptTags.localConceptId").in(conceptIds));
+            andCriteria.add(Criteria.where("conceptTags.localConceptId").in(conceptIds));
         }
+        query.addCriteria(new Criteria().andOperator(andCriteria.toArray(new Criteria[0])));
         query.skip(start);
         query.limit(pageSize);
         return mongoTemplate.find(query, Citation.class);
@@ -82,18 +83,17 @@ public class CitationMongoDao implements ICitationDao {
     @Override
     public List<? extends ICitation> findCitationsInCollection(String groupId, String collectionId, long start, int pageSize, List<String> conceptIds, ItemType type) {
         Query query = new Query();
-        query.addCriteria(Criteria.where("group").is(groupId));
-        query.addCriteria(Criteria.where("collections").is(collectionId));
+        java.util.List<Criteria> andCriteria = new java.util.ArrayList<>();
+        andCriteria.add(Criteria.where("group").is(groupId));
+        andCriteria.add(Criteria.where("collections").is(collectionId));
+        andCriteria.add(Criteria.where("itemType").nin(ItemType.NOTE.name(), ItemType.ATTACHMENT.name()));
         if (type != null) {
-            query.addCriteria(new Criteria().andOperator(
-                    Criteria.where("itemType").nin(ItemType.NOTE.name(), ItemType.ATTACHMENT.name()),
-                    Criteria.where("itemType").is(type.name())));
-        } else {
-            query.addCriteria(Criteria.where("itemType").nin(ItemType.NOTE.name(), ItemType.ATTACHMENT.name()));
+            andCriteria.add(Criteria.where("itemType").is(type.name()));
         }
         if (conceptIds != null && !conceptIds.isEmpty()) {
-            query.addCriteria(Criteria.where("conceptTags.localConceptId").in(conceptIds));
+            andCriteria.add(Criteria.where("conceptTags.localConceptId").in(conceptIds));
         }
+        query.addCriteria(new Criteria().andOperator(andCriteria.toArray(new Criteria[0])));
         query.skip(start);
         query.limit(pageSize);
         return mongoTemplate.find(query, Citation.class);
