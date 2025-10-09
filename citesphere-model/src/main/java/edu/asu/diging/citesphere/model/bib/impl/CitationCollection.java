@@ -4,6 +4,7 @@ import javax.persistence.Column;
 import javax.persistence.Id;
 
 import org.bson.types.ObjectId;
+import org.springframework.data.mongodb.core.index.Indexed;
 
 import edu.asu.diging.citesphere.model.bib.ICitationCollection;
 
@@ -13,6 +14,7 @@ public class CitationCollection implements ICitationCollection {
     @Id
     private ObjectId id;
     @Column(name="collectionKey")
+    @Indexed(unique = true)
     private String key;
     private long version;
     private long contentVersion;

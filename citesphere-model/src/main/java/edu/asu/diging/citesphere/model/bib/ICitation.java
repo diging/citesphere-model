@@ -3,9 +3,14 @@ package edu.asu.diging.citesphere.model.bib;
 import java.util.List;
 import java.util.Set;
 
+import org.bson.types.ObjectId;
 import org.springframework.social.zotero.api.Tag;
 
 public interface ICitation {
+    
+    ObjectId getId();
+    
+    void setId(ObjectId id);
 
     String getKey();
 
@@ -188,4 +193,8 @@ public interface ICitation {
     void setTags(List<Tag> tags);
 
     boolean isMetaDataNote();
+    
+    public int getHidden();
+    
+    public void setHidden(int hidden);
 }
